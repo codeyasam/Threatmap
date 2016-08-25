@@ -153,7 +153,7 @@
 		function toJSON() {
 			$fValueArr = array();
 			foreach ($this->getFields() as $key => $eachField) {
-				$fValueArr[] = '"' . $eachField . '":"' . $this->$eachField . '"';
+				$fValueArr[] = '"' . $eachField . '":"' . htmlentities($this->$eachField) . '"';
 			}
 
 			return join(",",$fValueArr);
