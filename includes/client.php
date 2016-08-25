@@ -1,10 +1,10 @@
 <?php require_once(LIB_PATH . DS . "database.php"); ?>
-<?php require_once(LIB_PATH . DS . "databaseObject"); ?>
+<?php require_once(LIB_PATH . DS . "databaseObject.php"); ?>
 
 <?php  
 	class ClientUser extends DatabaseObject {
 		protected static $table_name = "CLIENT_TB";
-		protected static $db_fields = array('id', 'display_picture', 'first_name', 'last_name', 'middle_name', 'address', 'contact_no', 'office_id', 'department', 'rank', 'username', 'password', 'person_to_notify', 'relationship', 'identification_number');
+		protected static $db_fields = array('id', 'display_picture', 'first_name', 'last_name', 'middle_name', 'address', 'lat', 'lng', 'contact_no', 'office_id', 'department', 'rank', 'username', 'password', 'person_to_notify', 'relationship', 'identification_number');
 
 		public $id;
 		public $display_picture;
@@ -12,6 +12,8 @@
 		public $last_name;
 		public $middle_name;
 		public $address;
+		public $lat;
+		public $lng;
 		public $contact_no;
 		public $office_id;
 		public $department;
