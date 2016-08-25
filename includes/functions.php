@@ -16,12 +16,17 @@
 	}	
 
 	//handles array of object of the models
-	function createJSONEntity($holder, $objArr) {
+	function createJSONEntity($holder, $objArr, $customized=false) {
 		$otString = '"' . $holder . '":[';
+		
+		if (empty($objArr)) {
+			return $otString .= ']';
+		}
+		
 		$otArray = array();
 
 		foreach ($objArr as $key => $eachObj) {
-			$otArray[] = $eachObj->toJSON();
+			$otArray[] = !$customized ? $eachObj->toJSON() : $eachObj->toJSON($customized);
 		}
 
 		$otString .= "{" . join("},{", $otArray) . "}";
@@ -31,4 +36,10 @@
 	}	
 
 
+	function getNavigation($user, $hasSearchBox=false) {
+		global $user;
+		global $nav_has_search_box;
+		$nav_has_search_box = $hasSearchBox;
+		require_once(LIB_PATH . DS . "navigation.php");
+	}
 ?>
