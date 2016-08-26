@@ -11,7 +11,7 @@
 											'rank', 'username', 'password');
 
 		public $id;
-		public $display_picture;
+		public $display_picture = "DISPLAY_PICTURES/default_avatar.png";
 		public $first_name;
 		public $last_name;
 		public $middle_name;
@@ -65,7 +65,7 @@
 				$fValueArr = array();
 				foreach ($this->getCustomFields() as $key => $eachField) {
 					if ($eachField == "display_picture") {
-						$fValueArr[] = '"' . $eachField . '":"' . '<img src=\"' . htmlentities($this->$eachField) . '\"/>"';
+						$fValueArr[] = '"' . $eachField . '":"' . '<img src=\"' . htmlentities($this->$eachField) . '?dummy=' . time() . '\"/>"';
 					} else if ($eachField == "full_name") {
 						$fValueArr[] = '"' . $eachField . '":"' . htmlentities($this->full_name()) . '"';	
 					} else if ($eachField == "office_id") {
@@ -78,6 +78,41 @@
 				return join("," ,$fValueArr);		
 			}
 			return parent::toJSON();
+		}
+
+		public static function hasExisting($entry, $columnName) {
+			global $database;
+
+			$entry = $database->escape_value($entry);
+			$columnName = $database->escape_value($columnName);
+
+			$sql  = "SELECT * FROM " . self::$table_name . " ";
+			$sql .= "WHERE " . $columnName . " = '{$entry}' ";
+
+			$result_array = self::find_by_sql($sql);
+			return !empty($result_array) ? array_shift($result_array) : false;
+		}		
+
+		public static function check_existing($str, $columnName, $msg) {
+			global $errors;
+			$result = static::hasExisting($str, $columnName);
+			if ($result) $errors[] = $msg; 
+			return $result;
+		}		
+
+		public static function search_user_by_column_array($str, $columnArray=array()) {
+			global $database;
+
+			$str = $database->escape_value($str);
+
+			$sql  = "SELECT * FROM " . self::$table_name . " ";
+			$sql .= "WHERE ";
+			$sqlArray = array();
+			foreach ($columnArray as $key => $value) {
+				$sqlArray[] = $value . " LIKE '%" . $str . "%'";
+			}
+			$sql .= join(' OR ', $sqlArray);
+			return self::find_by_sql($sql);
 		}
 	}
 ?>

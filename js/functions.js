@@ -21,6 +21,9 @@ function processPOSTRequest(suppliedURL, sendData) {
 }
 
 function tableJSON(tableID, jsonObjRoot, allowedOpts=["EDIT", "DELETE"]) {
+	var d = new Date();
+	var n = d.getTime();
+
 	$(tableID).html("");
 	$(tableID).attr("border", 1);
 	var newTr = "";
@@ -30,8 +33,7 @@ function tableJSON(tableID, jsonObjRoot, allowedOpts=["EDIT", "DELETE"]) {
 			//console.log(jsonObjRoot[key].id);
 			for (var eachField in jsonObjRoot[key]) {
 				if (jsonObjRoot[key].hasOwnProperty(eachField)) {
-					newTr += "<td>" + jsonObjRoot[key][eachField] + "</td>";
-					//console.log(jsonObjRoot[key][eachField]);
+					newTr += "<td>" + jsonObjRoot[key][eachField] + "</td>";	
 				}
 			}
 			if (allowedOpts.indexOf("EDIT") != -1)
@@ -46,7 +48,7 @@ function tableJSON(tableID, jsonObjRoot, allowedOpts=["EDIT", "DELETE"]) {
 
 function confirm_action(msg, action_performed) {
 	if ($('#dialog').length != 1) {
-		$('body').append(create_confirm_dialog());
+		$('body').append(create_confirm_dialog("dialog", "Confirmation Required"));
 	}
 
 	$('#dialog > p').text(msg);
@@ -55,22 +57,41 @@ function confirm_action(msg, action_performed) {
 		autoOpen: false,
 		modal: true,
 		buttons : {
-		    "Confirm" : action_performed,
 		    "Cancel" : function() {
 		      $(this).dialog("close");
-		    }
+		    },"Confirm" : action_performed
 		  }
 	});	
 
 	$("#dialog").dialog("open"); 
 }
 
-function create_confirm_dialog() {
+function create_confirm_dialog(myId, myTitle) {
 	var confirm_div = document.createElement("div");
-	confirm_div.setAttribute("id", "dialog");
-	confirm_div.setAttribute("title", "Confirmation Required");
+	confirm_div.setAttribute("id", myId);
+	confirm_div.setAttribute("title", myTitle);
 	confirm_div.style.display = 'none';
 	var confirm_p = document.createElement("p");
 	confirm_div.appendChild(confirm_p);
 	return confirm_div;
+}
+
+function custom_alert_dialog(msg) {
+	if ($('#customAlert').length != 1) {
+		$('body').append(create_confirm_dialog("customAlert", "NOTICE"));
+	}
+
+	$('#customAlert > p').text(msg);
+
+	$('#customAlert').dialog({
+		autoOpen: false,
+		modal: true,
+		buttons : {
+			"OK" : function() {
+				$(this).dialog('close');
+			}
+		}
+	});
+
+	$('#customAlert').dialog('open');
 }

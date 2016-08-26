@@ -16,3 +16,14 @@
 	height: 100%;
 	width: 30%;
 }
+
+#userFormDialog input, #userFormDialog select {
+
+	max-width: 280px;
+	min-width: 280px;	
+}
+
+#output {
+	height: 114px;
+	width: 114px;
+}
