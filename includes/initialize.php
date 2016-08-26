@@ -23,4 +23,5 @@
 	require_once(LIB_PATH . DS . "user.php");
 	require_once(LIB_PATH . DS . "client.php");
 	require_once(LIB_PATH . DS . "office.php");
+	require_once(LIB_PATH . DS . "threat.php");
 ?>

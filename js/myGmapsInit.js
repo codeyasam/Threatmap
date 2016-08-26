@@ -1,7 +1,7 @@
 //setup map	
 var mapOptions = {
 		streetViewControl: false,
-    center: new google.maps.LatLng(12.8797, 121,7740), //philippines
+    center: new google.maps.LatLng(12.8797, 121.7740), //philippines
     zoom: 6,
     mapTypeId: google.maps.MapTypeId.ROADMAP
 };	
@@ -13,7 +13,6 @@ var map = new google.maps.Map(document.getElementById('map'), mapOptions);
 var markerOptions = {
 	map: map,
 	draggable: false
-
 }
 //end of setting the marker options
 
@@ -60,14 +59,3 @@ function setMarkerValues(markerOptions, jsonObject) {
 	return marker;
 }
 
-//setup marker event callback
-function eventCallBack(marker) {
-	(function(marker) {
-		google.maps.event.addListener(marker, 'click', function() {
-			//show info window with address
-			console.log("marker clicked");
-			infoWindow.setContent('<div><strong>' + marker.address + '</strong><br>');
-			infoWindow.open(map, marker);
-		});
-	})(marker);
-}

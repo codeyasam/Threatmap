@@ -41,6 +41,36 @@
 				}
 			}
 
+			function plotClientsOnMap(clientsJsonObj) {
+				for (var key in clientsJsonObj) {
+					if (clientsJsonObj.hasOwnProperty(key)) {
+						markerOptions.position = new google.maps.LatLng(clientsJsonObj[key].lat, clientsJsonObj[key].lng);
+						var marker = setMarkerValues(markerOptions, clientsJsonObj[key]);
+						eventCallBack(marker);
+					}
+				}
+			}
+
+			function setMarkerValues(markerOptions, jsonObject) {
+				var marker = new google.maps.Marker(markerOptions);
+				marker.setMap(map);
+				marker.id = jsonObject.id;
+				marker.address = jsonObject.address;
+				return marker;
+			}
+
+			//setup marker event callback
+			function eventCallBack(marker) {
+				(function(marker) {
+					google.maps.event.addListener(marker, 'click', function() {
+						//show info window with address
+						console.log("marker clicked");
+						infoWindow.setContent('<div><strong>' + marker.address + '</strong><br>');
+						infoWindow.open(map, marker);
+					});
+				})(marker);
+			}
+
 		</script>		
 	</body>
 </html>
