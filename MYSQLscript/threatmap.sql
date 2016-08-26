@@ -51,6 +51,13 @@ CREATE TABLE CLIENT_TB (
 	identification_number VARCHAR(255) NOT NULL	
 );
 
+CREATE TABLE THREAT_TB (
+	id INT(11) AUTO_INCREMENT PRIMARY KEY,
+	address VARCHAR(255) NOT NULL,
+	lat FLOAT(10, 6) NOT NULL,
+	lng FLOAT(10, 6) NOT NULL
+);
+
 #DEFAULT VALUES
 
 INSERT INTO OFFICE_TB (name, address, contact_person, contact_no, lat, lng) 
