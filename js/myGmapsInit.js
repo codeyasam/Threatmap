@@ -41,21 +41,4 @@ google.maps.event.addListener(autocomplete, 'place_changed', function() {
 });							
 //end of setting the autocomplete
 
-function plotClientsOnMap(clientsJsonObj) {
-	for (var key in clientsJsonObj) {
-		if (clientsJsonObj.hasOwnProperty(key)) {
-			markerOptions.position = new google.maps.LatLng(clientsJsonObj[key].lat, clientsJsonObj[key].lng);
-			var marker = setMarkerValues(markerOptions, clientsJsonObj[key]);
-			eventCallBack(marker);
-		}
-	}
-}
-
-function setMarkerValues(markerOptions, jsonObject) {
-	var marker = new google.maps.Marker(markerOptions);
-	marker.setMap(map);
-	marker.id = jsonObject.id;
-	marker.address = jsonObject.address;
-	return marker;
-}
 
