@@ -101,14 +101,14 @@
 				var geocoder = new google.maps.Geocoder();
 				geocoder.geocode({'latLng': latLng}, function(results, status) {
 					if (status !== google.maps.GeocoderStatus.OK) {
-						alert("something went wrong. try again");
+						alert(status);
 					}
 					//checking to see if the geocode status is ok before proceeding
 					if (status == google.maps.GeocoderStatus.OK) {
 						var address = (results[0].formatted_address);
 
 						if (operation == "UPDATE") {
-
+							processPOSTRequest("backendprocess2.php", "updateThreat=true&address=" + address + "&lat=" + e.latLng.lat() + "&lng=" + e.latLng.lng() + "&threat_id=" + markers[selectedIndex].id);
 						} else if (operation == "CREATE") {
 							processPOSTRequest("backendprocess2.php", "createThreat=true&address=" + address + "&lat=" + e.latLng.lat() + "&lng=" + e.latLng.lng());
 						}
@@ -144,7 +144,6 @@
 			}
 
 			function selectMarker(marker, markers) {
-
 				selectedIndex = markers.indexOf(marker);
 			}
 
@@ -159,7 +158,12 @@
 							}
 							confirm_action("Are you sure you want to delete this threat?", action_performed);
 						}
-					})
+					});
+
+					google.maps.event.addListener(marker, "dragend", function(e) {
+						selectedIndex = markers.indexOf(marker);
+						getReverseGeocodingData(e, "UPDATE");
+					});
 				})(marker);
 			}
 

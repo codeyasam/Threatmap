@@ -22,6 +22,12 @@
 		$output .= createJSONEntity("Threats", $all_threats);
 	} else if (isset($_POST['deleteThreat'])) {
 		Threat::delete_by_id($_POST['threat_id']);
+	} else if (isset($_POST['updateThreat'])) {
+		$threat = Threat::find_by_id($_POST['threat_id']);
+		$threat->address = trim($_POST['address']);
+		$threat->lat = trim($_POST['lat']);
+		$threat->lng = trim($_POST['lng']);
+		$threat->update();
 	}
 
 	$output .= "}";
