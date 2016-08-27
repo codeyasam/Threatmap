@@ -1,6 +1,6 @@
 //setup map	
 var mapOptions = {
-		streetViewControl: false,
+	streetViewControl: false,
     center: new google.maps.LatLng(12.8797, 121.7740), //philippines
     zoom: 6,
     mapTypeId: google.maps.MapTypeId.ROADMAP
@@ -40,5 +40,3 @@ google.maps.event.addListener(autocomplete, 'place_changed', function() {
 	infoWindow.setContent('<div><strong>' + place.name + '</strong><br>');		
 });							
 //end of setting the autocomplete
-
-

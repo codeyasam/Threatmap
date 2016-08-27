@@ -37,7 +37,7 @@
 					</tr>
 					<tr>
 						<td>Address: </td>
-						<td id="address">click the map for location</td>
+						<td id="address">click the map for location assignment</td>
 					</tr>
 					<tr>
 						<td>Contact Person: </td>
@@ -53,8 +53,9 @@
 					</tr>
 				</table>
 				<div id="mapContainer"><div id="map" class="main-window"></div></div>
+				<hr/>
 				<div class="actionBtnContainer">
-					<input id="btnCancel" type="submit" value="CANCEL"/>
+					<input id="btnCancel" type="submit" value="CANCEL" style="display:none;"/>
 					<input id="btnAdd" type="submit" value="CREATE"/>
 					<input id="btnSave" type="submit" value="SAVE" style="display:none;"/>	
 				</div>
@@ -66,9 +67,14 @@
 		<script type="text/javascript" src="js/functions.js"></script>
 		<script type="text/javascript" src="js/myGmapsInit.js"></script>
 		<script type="text/javascript">
+			markerOptions.animation = google.maps.Animation.DROP;
+			markerOptions.draggable = true;
+
+			var marker;		
 			processRequest("backendprocess3.php?getOffices=true&getType=all");
 
 			var currentOption = "all";
+			var officeObj = {id:"",name:"",contact_person:"",contact_no:"",address:"",municipality:"",lat:"",lng:""};
 
 			function handleServerResponse() {
 				if (objReq.readyState == 4 && objReq.status == 200) {
@@ -77,6 +83,27 @@
 
 					if (jsonObj.Offices) {
 						setupOfficeTable(jsonObj.Offices);
+					} 
+
+					if (jsonObj.createdOffice) {
+						$('#searchOffice').val('');
+						$('#searchOffice').prop('disabled', true);
+						$('#officeFields').val('all');
+						custom_alert_dialog("Successfully created an office.");
+						officeObj = {id:"",name:"",contact_person:"",contact_no:"",address:"",municipality:"",lat:"",lng:""};
+						setOfficeDetails(officeObj);						
+					} else if (jsonObj.selectedOffice) {
+						setOfficeDetails(jsonObj.selectedOffice);
+					} else if (jsonObj.updatedOffice) {
+						$('#searchOffice').val('');
+						$('#searchOffice').prop('disabled', true);
+						$('#officeFields').val('all');
+						$('#btnCancel').hide();
+						$('#btnSave').hide();
+						$('#btnAdd').show();						
+						custom_alert_dialog("Successfully updated an office.");
+						officeObj = {id:"",name:"",contact_person:"",contact_no:"",address:"",municipality:"",lat:"",lng:""};
+						setOfficeDetails(officeObj);
 					}
 				}
 			}
@@ -87,8 +114,34 @@
 				tblRows += getTableHeader(tblHeaders);
 				tblRows += '<th colspan="2">OPTIONS</th>'
 				tblRows += "</tr>";
-				tblRows += tableJSON('#officeContainer', jsonOfficesObj, {edit:"VIEW AND EDIT", delete:"DELETE"});
+				tblRows += tableJSON('#officeContainer', jsonOfficesObj, {edit:"EDIT", delete:"DELETE"});
 				$('#officeContainer').append('<tbody>' + tblRows + '</tbody>');
+			}
+
+			function setOfficeDetails(jsonSelectedOffice) {
+				officeObj = jsonSelectedOffice;
+				console.log(officeObj + " my local");
+				$('#name').val(officeObj.name);
+				$('#contact_person').val(officeObj.contact_person);
+				$('#contact_no').val(officeObj.contact_no);
+				$('#navSearchBox').val('');
+				if (officeObj.address == "") {
+					$('#address').text("click the map for location assignment");
+				} else {
+					$('#address').text(officeObj.address);	
+				}
+				
+				if (officeObj.lat == "" || officeObj.lng == "") {
+					marker.setMap(null);
+					marker = null;
+					map.setCenter(new google.maps.LatLng(12.8797, 121.7740));
+    				map.setZoom(6);
+				} else {
+					markerOptions.position = new google.maps.LatLng(officeObj.lat, officeObj.lng);
+					addMarkerOnce(markerOptions);
+					map.setCenter(markerOptions.position);
+    				map.setZoom(12);
+				}
 			}
 
 			$('#officeFields').on('change', function() {
@@ -96,6 +149,7 @@
 				var searchStr = $('#searchOffice').val();
 				currentOption = selectedOption;
 				if (selectedOption == "all") {
+					$('#searchOffice').val('');
 					$('#searchOffice').prop('disabled', true);
 					processRequest("backendprocess3.php?getOffices=true&getType=all");
 				} else {
@@ -120,7 +174,87 @@
 				}
 				confirm_action(confirm_msg, actionPerformed);
 				return false;
-			});			
+			});		
+
+			$('#btnAdd').on('click', function() {
+				officeObj.name = $('#name').val();
+				officeObj.contact_person = $('#contact_person').val();
+				officeObj.contact_no = $('#contact_no').val();		
+				var searchStr = $('#searchOffice').val();
+				
+				if (officeObj.name == "" || officeObj.contact_person == "" || officeObj.contact_no == "" || officeObj.municipality == "" || officeObj.lat == "" || officeObj.lng == "") {
+					custom_alert_dialog("Fill all required fields");
+					return;
+				} else if (officeObj.address == "") {
+					custom_alert_dialog("set the office address by plotting it on the map.");
+					return;
+				}
+
+				processPOSTRequest("backendprocess3.php", "createOffice=true&jsonOffice=" + JSON.stringify(officeObj)+"&getType="+currentOption+"&searchStr="+searchStr);
+			});
+
+			$('#btnCancel').on('click', function() {
+				officeObj = {id:"",name:"",contact_person:"",contact_no:"",address:"",municipality:"",lat:"",lng:""};
+				setOfficeDetails(officeObj);
+			});	
+
+			$('#btnSave').on('click', function() {
+				processPOSTRequest('backendprocess3.php', "updateOffice=true&jsonOffice=" + JSON.stringify(officeObj));
+			});
+
+			$(document).on('click', '.optEdit', function () {
+				$office_id = $(this).attr('data-internalid');
+				processRequest("backendprocess3.php?selectOffice=true&office_id=" + $office_id);
+				$('#btnAdd').hide();
+				$('#btnCancel').show();
+				$('#btnSave').show();
+				return false;
+			});
+
+			//on map click
+			google.maps.event.addListener(map, 'click', function(e) {
+				getReverseGeocodingData(e);
+			});
+
+			function addMarkerOnce(customMarkerOptions) {
+				if (marker) {	
+					marker.setPosition(customMarkerOptions.position);
+				} else {
+					marker = new google.maps.Marker(customMarkerOptions);
+					marker.setMap(map);
+					eventCallBack(marker);
+				}
+			}
+
+			function getReverseGeocodingData(e) {
+				var latLng = new google.maps.LatLng(e.latLng.lat(), e.latLng.lng());
+				var geocoder = new google.maps.Geocoder();
+				geocoder.geocode({'latLng':latLng}, function(results, status) {
+					if (status !== google.maps.GeocoderStatus.OK) {
+						alert(status);
+					}
+
+					if (status == google.maps.GeocoderStatus.OK) {
+						console.log(results[0]);
+						console.log(results[0].address_components[1].long_name);
+						officeObj.address = results[0].formatted_address;
+						officeObj.municipality = results[0].address_components[1].long_name;
+						officeObj.lat = e.latLng.lat();
+						officeObj.lng = e.latLng.lng();
+						markerOptions.position = new google.maps.LatLng(officeObj.lat, officeObj.lng);
+						$('#address').text(officeObj.address);
+						addMarkerOnce(markerOptions);
+					}
+				});
+			}
+
+			function eventCallBack(marker) {
+				(function(marker) {
+					google.maps.event.addListener(marker, 'dragend', function(e) {
+						getReverseGeocodingData(e);
+					});
+				})(marker);
+			}
 		</script>		
 	</body>
 </html>

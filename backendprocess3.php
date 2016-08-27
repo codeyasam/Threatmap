@@ -14,6 +14,37 @@
 		Office::delete_by_id(trim($_POST['office_id']));
 		$offices = getOffices(true);
 		$output .= createJSONEntity("Offices", $offices, true);
+	} else if (isset($_POST['createOffice'])) {
+		$jsonOffice = json_decode($_POST['jsonOffice']);
+		$office = new Office();
+		$office->name = $jsonOffice->name;
+		$office->address = $jsonOffice->address;
+		$office->contact_person = $jsonOffice->contact_person;
+		$office->contact_no = $jsonOffice->contact_no;
+		$office->municipality = $jsonOffice->municipality;
+		$office->lat = $jsonOffice->lat;
+		$office->lng = $jsonOffice->lng;
+		$office->create();
+		$offices = Office::find_all();
+		$output .= createJSONEntity("Offices", $offices, true) . ", ";
+		$output .= '"createdOffice":"true"';
+	} else if (isset($_GET['selectOffice'])) {
+		$office = Office::find_by_id($_GET['office_id']);
+		$output .= '"selectedOffice":{' . $office->toJSON() . '}'; 
+	} else if (isset($_POST['updateOffice'])) {
+		$jsonOffice = json_decode($_POST['jsonOffice']);
+		$office = Office::find_by_id($jsonOffice->id);
+		$office->name = $jsonOffice->name;
+		$office->address = $jsonOffice->address;
+		$office->contact_person = $jsonOffice->contact_person;
+		$office->contact_no = $jsonOffice->contact_no;
+		$office->municipality = $jsonOffice->municipality;
+		$office->lat = $jsonOffice->lat;
+		$office->lng = $jsonOffice->lng;
+		$office->update();
+		$offices = Office::find_all();
+		$output .= createJSONEntity("Offices", $offices, true) . ", ";
+		$output .= '"updatedOffice":"true"';
 	}
 
 	$output .= "}";
