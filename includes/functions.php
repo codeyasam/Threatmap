@@ -42,4 +42,12 @@
 		$nav_has_search_box = $hasSearchBox;
 		require_once(LIB_PATH . DS . "navigation.php");
 	}
+
+	function getOptions($objArr) {
+		$output = "";
+		foreach ($objArr as $key => $value) {
+			$output .= '<option value"' . $value . '">' . htmlentities($value) . '</option>'; 
+		}	
+		return $output;
+	}
 ?>
