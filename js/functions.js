@@ -20,7 +20,7 @@ function processPOSTRequest(suppliedURL, sendData) {
 	}
 }
 
-function tableJSON(tableID, jsonObjRoot, allowedOpts=["EDIT", "DELETE"]) {
+function tableJSON(tableID, jsonObjRoot, allowedOpts={edit :"EDIT", delete : "DELETE"}) {
 	var d = new Date();
 	var n = d.getTime();
 
@@ -36,10 +36,10 @@ function tableJSON(tableID, jsonObjRoot, allowedOpts=["EDIT", "DELETE"]) {
 					newTr += "<td>" + jsonObjRoot[key][eachField] + "</td>";	
 				}
 			}
-			if (allowedOpts.indexOf("EDIT") != -1)
-			newTr += '<td><a class="optEdit" data-internalid="' + jsonObjRoot[key].id + '" href="">EDIT</a></td>';
-			if (allowedOpts.indexOf("DELETE") != -1)
-				newTr += '<td><a class="optDelete" data-internalid="' + jsonObjRoot[key].id + '" href="">DELETE</a></td>';
+			if (allowedOpts.edit)//if (allowedOpts.indexOf("EDIT") != -1)
+			newTr += '<td><a class="optEdit" data-internalid="' + jsonObjRoot[key].id + '" href="">' + allowedOpts.edit + '</a></td>';
+			if (allowedOpts.delete) //if (allowedOpts.indexOif (allowedOpts.delete) //f("DELETE") != -1)
+				newTr += '<td><a class="optDelete" data-internalid="' + jsonObjRoot[key].id + '" href="">' + allowedOpts.delete + '</a></td>';
 			newTr += "</tr>";
 		}
 	}
@@ -94,4 +94,14 @@ function custom_alert_dialog(msg) {
 	});
 
 	$('#customAlert').dialog('open');
+}
+
+function getTableHeader(headerArray) {
+	var tblHeaders = "";
+	for (var key in headerArray) {
+		if (headerArray.hasOwnProperty(key)) {
+			tblHeaders += '<th>' + headerArray[key] + '</th>';
+		}
+	}
+	return tblHeaders;
 }
