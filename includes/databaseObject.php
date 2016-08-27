@@ -170,7 +170,22 @@
 
 			$result_array = static::find_by_sql($sql);
 			return !empty($result_array) ? true : false;
-		}		
+		}
+
+		public static function search_by_column_array($str, $columnArray=array()) {
+			global $database;
+
+			$str = $database->escape_value($str);
+
+			$sql  = "SELECT * FROM " . static::$table_name . " ";
+			$sql .= "WHERE ";
+			$sqlArray = array();
+			foreach ($columnArray as $key => $value) {
+				$sqlArray[] = $value . " LIKE '%" . $str . "%'";
+			}
+			$sql .= join(' OR ', $sqlArray);
+			return static::find_by_sql($sql);
+		}				
 
 	}
 ?>
