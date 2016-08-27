@@ -21,6 +21,13 @@
 			<button title="Drag Tool" id="dragThreatBtn" type="button"></button>
 			<!-- <button title="Select Tool" id="selectBranchBtn" type="button"></button> -->
 		</div>
+		<div id="threatFormDialog" style="display:none;">
+			<table>
+				<tr>
+					<td><input id="description" type="text" placeholder="enter threat description"/></td>
+				</tr>
+			</table>
+		</div>
 		<script src="https://maps.googleapis.com/maps/api/js?sensor=false&key=AIzaSyDDpPDWu9z820FMYyOVsAphuy0ryz4kt2o&libraries=places&sensor=false"></script>
 		
 		<!-- <div id="indexDetailContainer"></div> -->
@@ -53,6 +60,8 @@
 						markerOptions.position = new google.maps.LatLng(jsonObj.newThreat.lat, jsonObj.newThreat.lng);
 						var marker = setMarkerValues(markerOptions, jsonObj.newThreat);
 						eventCallback(marker);
+					} else if (jsonObj.updatedDescription) {
+						markers[selectedIndex].description = jsonObj.updatedDescription.description;
 					}
 				}
 			}
@@ -110,7 +119,13 @@
 						if (operation == "UPDATE") {
 							processPOSTRequest("backendprocess2.php", "updateThreat=true&address=" + address + "&lat=" + e.latLng.lat() + "&lng=" + e.latLng.lng() + "&threat_id=" + markers[selectedIndex].id);
 						} else if (operation == "CREATE") {
-							processPOSTRequest("backendprocess2.php", "createThreat=true&address=" + address + "&lat=" + e.latLng.lat() + "&lng=" + e.latLng.lng());
+							var action_performed = function() {
+								var description = $('#description').val();
+								processPOSTRequest("backendprocess2.php", "createThreat=true&address=" + address + "&lat=" + e.latLng.lat() + "&lng=" + e.latLng.lng() + "&description=" + description);
+								$('#threatFormDialog').dialog('close');								
+							}
+							setupThreatForm(operation, action_performed);
+							$('#threatFormDialog').dialog('open');
 						}
 					}
 				});
@@ -129,6 +144,7 @@
 				marker.setMap(map);
 				marker.id = jsonObject.id;
 				marker.address = jsonObject.address;
+				marker.description = jsonObject.description;
 				markers.push(marker);
 				console.log("set marker valeus");
 				return marker;
@@ -157,6 +173,15 @@
 								$('#dialog').dialog('close');
 							}
 							confirm_action("Are you sure you want to delete this threat?", action_performed);
+						} else {
+							selectMarker(marker, markers);
+							var action_performed = function() {
+								var description = $('#description').val();
+								processPOSTRequest("backendprocess2.php", "updateThreatDescription=true&description=" + description + "&threat_id=" + markers[selectedIndex].id);
+								$('#threatFormDialog').dialog('close');					
+							}
+							setupThreatForm("UPDATE", action_performed, markers[selectedIndex].description);
+							$('#threatFormDialog').dialog('open');							
 						}
 					});
 
@@ -167,6 +192,36 @@
 				})(marker);
 			}
 
+			function setupThreatForm(opt_type, action_performed, description=false) {
+				$('#threatFormDialog').dialog({
+					autoOpen: false,
+					modal: true,
+					buttons : [{
+						text: "Cancel",
+					    click : function() {
+					    	$(this).dialog("close");
+					    },  
+					  }, {
+					  	text: "CREATE",
+					  	"id": "btnCreate",
+					  	click: action_performed,
+					  }, {
+					  	text: "SAVE",
+					  	"id": "btnSave",
+					  	click: action_performed,
+					}],
+					close: function() {
+					}					
+				});
+				var btnToHide = (opt_type == "CREATE") ? "#btnSave" : "#btnCreate";
+				$(btnToHide).hide();
+
+				if (description) {
+					$('#description').val(description);
+				} else {
+					$('#description').val('');
+				}				
+			}
 
 		</script>				
 	</body>	

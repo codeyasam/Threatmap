@@ -12,6 +12,7 @@
 	if (isset($_POST['createThreat'])) {
 		$new_threat = new Threat();
 		$new_threat->address = trim($_POST['address']);
+		$new_threat->description = trim($_POST['description']);
 		$new_threat->lat = trim($_POST['lat']);
 		$new_threat->lng = trim($_POST['lng']);
 		$new_threat->create();
@@ -28,6 +29,11 @@
 		$threat->lat = trim($_POST['lat']);
 		$threat->lng = trim($_POST['lng']);
 		$threat->update();
+	} else if (isset($_POST['updateThreatDescription'])) {
+		$threat = Threat::find_by_id($_POST['threat_id']);
+		$threat->description = trim($_POST['description']);
+		$threat->update();
+		$output .= '"updatedDescription":{' . $threat->toJSON() . '}';
 	}
 
 	$output .= "}";

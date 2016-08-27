@@ -56,6 +56,11 @@
 				marker.setMap(map);
 				marker.id = jsonObject.id;
 				marker.address = jsonObject.address;
+				marker.first_name = jsonObject.first_name;
+				marker.middle_name = jsonObject.middle_name;
+				marker.last_name = jsonObject.last_name;
+				marker.display_picture = jsonObject.display_picture;
+				marker.contact_no = jsonObject.contact_no;
 				return marker;
 			}
 
@@ -65,7 +70,17 @@
 					google.maps.event.addListener(marker, 'click', function() {
 						//show info window with address
 						console.log("marker clicked");
-						infoWindow.setContent('<div><strong>' + marker.address + '</strong><br>');
+						var content = '<div>';
+						content += '<div style="float:left; padding: 5px;"><img src="' + marker.display_picture;
+						content += '" style="width: 60px; height: 60px;"/></div>'
+						content += '<div style="float:left;">';
+						content += '<p style="margin:3px">' + marker.last_name + ', ' + marker.first_name + ' ' + marker.middle_name + '</p>';
+						content += '<p style="margin:3px">' + marker.contact_no + '</p>';
+						content += '<p style="margin-left:3px; margin-top:10px;">' + marker.address + '</p>';
+						content += '</div>';
+						content += '</div>';
+						// infoWindow.setContent('<div><strong>' + marker.address + '</strong><br>');
+						infoWindow.setContent(content);
 						infoWindow.open(map, marker);
 					});
 				})(marker);
