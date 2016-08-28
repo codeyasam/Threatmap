@@ -51,6 +51,13 @@
 			return $this->last_name . ", " . $this->first_name . " " . $this->middle_name;
 		}
 
+		public static function getUserFields() {
+			return array('id'=>'ID', 'full_name'=>'Full Name', 'first_name'=>'First Name', 
+					'last_name'=>'Last Name', 'middle_name'=>'Middle Name', 'address'=>'Address', 
+					'contact_no'=>'Contact No.', 'office_id'=>'Office Name', 'department'=>'Department', 
+					'rank'=>'Rank', 'username'=>'Username');			
+		}
+
 		//Override
 		public function getCustomFields() {
 			return array('id', 'display_picture','full_name', 'address', 
@@ -110,6 +117,19 @@
 			$sqlArray = array();
 			foreach ($columnArray as $key => $value) {
 				$sqlArray[] = $value . " LIKE '%" . $str . "%'";
+			}
+			$sql .= join(' OR ', $sqlArray);
+			return self::find_by_sql($sql);
+		}
+
+		public static function search_by_office_Ids($ids=array()) {
+			global $database;
+
+			$sql  = "SELECT * FROM " . self::$table_name . " ";
+			$sql .= "WHERE ";
+			$sqlArray = array();
+			foreach ($ids as $key => $value) {
+				$sqlArray[] = "office_id = " . $database->escape_value($value);
 			}
 			$sql .= join(' OR ', $sqlArray);
 			return self::find_by_sql($sql);
