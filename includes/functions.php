@@ -15,6 +15,17 @@
 		exit();
 	}	
 
+	function get_mysql_datetime($dt) {
+		//$dt = time();
+		$mysql_datetime = strftime("%Y-%m-%d %H:%M:%S", $dt);
+		return $mysql_datetime;		
+	}
+
+	function format_date($strDate) {
+		// return $strDate;
+		return $strDate == "0000-00-00 00:00:00" ? "0000-00-00 00:00 am" : date("m-d-y g:i a", strtotime($strDate));
+	}	
+
 	//handles array of object of the models
 	function createJSONEntity($holder, $objArr, $customized=false) {
 		$otString = '"' . $holder . '":[';
@@ -50,4 +61,5 @@
 		}	
 		return $output;
 	}
+
 ?>
