@@ -46,7 +46,7 @@
 	function getOptions($objArr) {
 		$output = "";
 		foreach ($objArr as $key => $value) {
-			$output .= '<option value"' . $value . '">' . htmlentities($value) . '</option>'; 
+			$output .= '<option value="' . $key . '">' . htmlentities($value) . '</option>'; 
 		}	
 		return $output;
 	}

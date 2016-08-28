@@ -14,8 +14,6 @@
 		<link rel="stylesheet" type="text/css" href="js/jquery-ui.css">		
 	</head>
 	<body>
-		<script src="https://maps.googleapis.com/maps/api/js?sensor=false&key=AIzaSyDDpPDWu9z820FMYyOVsAphuy0ryz4kt2o&libraries=places&sensor=false"></script>
-		
 		<?php getNavigation($user); ?>
 		<div class="page-wrapper">
 			<div id="officeLeft">
@@ -52,7 +50,7 @@
 						<td><input id="navSearchBox" type="text" placeholder="search location/address"/></td>
 					</tr>
 				</table>
-				<div id="mapContainer"><div id="map" class="main-window"></div></div>
+				<div class="mapContainer"><div id="map" class="main-window"></div></div>
 				<hr/>
 				<div class="actionBtnContainer">
 					<input id="btnCancel" type="submit" value="CANCEL" style="display:none;"/>
@@ -61,7 +59,7 @@
 				</div>
 			</div>
 		</div>
-		
+		<script src="https://maps.googleapis.com/maps/api/js?sensor=false&key=AIzaSyDDpPDWu9z820FMYyOVsAphuy0ryz4kt2o&libraries=places&sensor=false"></script>		
 		<script type="text/javascript" src="js/jquery-1.11.3.min.js"></script>
 		<script type="text/javascript" src="js/jquery-ui.min.js"></script>
 		<script type="text/javascript" src="js/functions.js"></script>
@@ -148,6 +146,7 @@
 				var selectedOption = $('#officeFields option:selected').val();
 				var searchStr = $('#searchOffice').val();
 				currentOption = selectedOption;
+				console.log(currentOption);
 				if (selectedOption == "all") {
 					$('#searchOffice').val('');
 					$('#searchOffice').prop('disabled', true);

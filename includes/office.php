@@ -17,7 +17,7 @@
 		public $lng;
 
 		public static function getOfficeFields() {
-			return self::$db_fields;
+			return array('id'=>'ID', 'name'=>'Name', 'address'=>'Address', 'municipality'=>'Municipality', 'contact_person'=>'Contact Person', 'contact_no'=>'Contact No.');
 		}
 
 		public function getCustomFields() {

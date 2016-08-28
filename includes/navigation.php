@@ -9,7 +9,7 @@
 		<li><a href="manageUsers.php">MANAGE USERS</a></li>
 		<li><a href="manageThreats.php">MANAGE THREATS</a></li>
 		<li><a href="manageOffices.php">MANAGE OFFICES</a></li>
-		<li><a href="viewClientsInfos.php">VIEW CLIENT DETAILS</a></li>
+		<li><a href="manageClients.php">VIEW CLIENT DETAILS</a></li>
 		<li><a href="logout.php">LOGOUT</a></li>
 	</ul>
 </nav>

@@ -42,7 +42,13 @@
 	float: left;
 }
 
-.officeRight #mapContainer {
+.mapContainer {
+	width: 38%;
+	height: 70%;
+	float: left;
+}
+
+.officeRight .mapContainer {
 	width: 100%;
 	height: 55%;
 }

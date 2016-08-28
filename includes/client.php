@@ -39,5 +39,34 @@
 			$result_array = self::find_by_sql($sql);
 			return !empty($result_array) ? array_shift($result_array) : false;			
 		}
+
+		public function full_name() {
+			return $this->last_name . ", " . $this->first_name . " " . $this->middle_name;
+		}
+
+		public static function getClientFields() {
+			return array('id'=>'ID', 'full_name'=>'Full Name', 'address'=>'Address', 'contact_no'=>'Contact No.', 'person_to_notify'=>'Person to Notify', 'identification_number'=>'Identification Number');			
+		}		
+
+		public function getCustomFields() {
+			return array('id', 'display_picture', 'full_name', 'address', 'contact_no', 'person_to_notify', 'relationship', 'identification_number');			
+		}
+
+		public function toJSON($customized=false) {
+			if ($customized) {
+				$fValueArr = array();
+				foreach($this->getCustomFields() as $key => $eachField) {
+					if ($eachField == "display_picture") {
+						$fValueArr[] = '"' . $eachField . '":"' . '<img src=\"' . htmlentities($this->$eachField) . '?dummy=' . time() . '\"/>"';
+					} else if ($eachField == "full_name") {
+						$fValueArr[] = '"' . $eachField . '":"' . htmlentities($this->full_name()) . '"';	
+					} else {
+						$fValueArr[] = '"' . $eachField . '":"' . htmlentities($this->$eachField) . '"';						
+					}					
+				}
+				return join(", ", $fValueArr);
+			}
+			return parent::toJSON();
+		}
 	}
 ?>
