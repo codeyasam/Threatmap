@@ -13,7 +13,19 @@
 		$output .= createJSONEntity("Clients", $allClients);
 		
 	} else if (isset($_GET['getUsers'])) {
-		$allUsers = User::find_all();
+		$allUsers = new User();
+		if ($_GET['getType'] == "all") {
+			$allUsers = User::find_all();	
+		} else if ($_GET['getType'] == "full_name") {
+			$allUsers = User::search_by_column_array(trim($_GET['searchValue']), array('first_name', 'middle_name', 'last_name'));
+		} else if ($_GET['getType'] == "office_id") {
+			$offices = Office::search_by_column_array($_GET['searchValue'], array('name'));
+			$idsArr = array_map(function($officeObj) { return $officeObj->id; }, $offices);
+			$allUsers = User::search_by_office_Ids($idsArr);
+			//$allUsers = User::find_all
+		} else {
+			$allUsers = User::search_user_by_column_array(trim($_GET['searchValue']), array($_GET['getType']));
+		} 		
 		$output .= createJSONEntity("Users", $allUsers, true);
 	} else if (isset($_POST['deleteAccount'])) {
 		$user_id = $database->escape_value($_POST['user_id']);
