@@ -44,8 +44,16 @@
 			return $this->last_name . ", " . $this->first_name . " " . $this->middle_name;
 		}
 
+		public function display_name() {
+			if (isset($this->first_name) && isset($this->last_name)) {
+				return $this->first_name . " " . $this->last_name;
+			} else {
+				return "";
+			}
+		}		
+
 		public static function getClientFields() {
-			return array('id'=>'ID', 'full_name'=>'Full Name', 'address'=>'Address', 'contact_no'=>'Contact No.', 'person_to_notify'=>'Person to Notify', 'identification_number'=>'Identification Number');			
+			return array('id'=>'ID', 'full_name'=>'Full Name', 'first_name'=>'First Name', 'middle_name'=>'Middle Name', 'last_name'=>'Last Name', 'address'=>'Address', 'contact_no'=>'Contact No.', 'person_to_notify'=>'Person to Notify', 'identification_number'=>'Identification Number');			
 		}		
 
 		public function getCustomFields() {
