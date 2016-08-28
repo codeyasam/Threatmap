@@ -5,11 +5,12 @@
 <nav>
 	<ul>
 		<li><img src="<?php echo htmlentities($user->display_picture); ?>"/><?php echo htmlentities($user->display_name()); ?></li>
-		<li><a href="index.php">MAIN SCREEN</a></li>
-		<li><a href="manageUsers.php">MANAGE USERS</a></li>
-		<li><a href="manageThreats.php">MANAGE THREATS</a></li>
-		<li><a href="manageOffices.php">MANAGE OFFICES</a></li>
-		<li><a href="manageClients.php">VIEW CLIENT DETAILS</a></li>
+		<li><a href="index.php">HOME</a></li>
+		<li><a href="manageUsers.php">USERS</a></li>
+		<li><a href="manageThreats.php">THREATS</a></li>
+		<li><a href="manageOffices.php">OFFICES</a></li>
+		<li><a href="manageClients.php">CLIENTS</a></li>
+		<li><a href="manageNotifications.php">NOTIFICATIONS</a></li>
 		<li><a href="logout.php">LOGOUT</a></li>
 	</ul>
 </nav>
