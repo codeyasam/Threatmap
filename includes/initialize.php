@@ -24,4 +24,5 @@
 	require_once(LIB_PATH . DS . "client.php");
 	require_once(LIB_PATH . DS . "office.php");
 	require_once(LIB_PATH . DS . "threat.php");
+	require_once(LIB_PATH . DS . "notification.php");
 ?>
