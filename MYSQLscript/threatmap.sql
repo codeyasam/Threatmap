@@ -60,19 +60,31 @@ CREATE TABLE THREAT_TB (
 	lng FLOAT(10, 6) NOT NULL
 );
 
+CREATE TABLE NOTIFICATION_TB (
+	id INT(11) AUTO_INCREMENT PRIMARY KEY,
+	client_id INT(11) NOT NULL,
+	CONSTRAINT notifs_client_id FOREIGN KEY(client_id)
+	REFERENCES CLIENT_TB(id),
+	address VARCHAR(255) NOT NULL,
+	municipality VARCHAR(255) NOT NULL,
+	lat FLOAT(10,6) NOT NULL,
+	lng FLOAT(10,6) NOT NULL,
+	submit_dtime DATETIME NOT NULL
+);
+
 #DEFAULT VALUES
 
-INSERT INTO OFFICE_TB (name, address, contact_person, contact_no, lat, lng) 
+INSERT INTO OFFICE_TB (name, address, municipality, contact_person, contact_no, lat, lng) 
 VALUES ('Malolos Crossing Police Station', 'Manila N Rd, Malolos, Bulacan, Philippines',
- 'John Doe', '0922222222', 14.852578, 120.816063);
+'Malolos', 'John Doe', '0922222222', 14.852578, 120.816063);
 
-INSERT INTO OFFICE_TB (name, address, contact_person, contact_no, lat, lng) 
-VALUES ('Bulacan Provincial Police Office', 'Brgy Kapitolyo Road, Malolos, Bulacan, Philippines',
- 'Lorem Doe', '0922222222', 14.852578, 120.816063);
+INSERT INTO OFFICE_TB (name, address, municipality, contact_person, contact_no, lat, lng) 
+VALUES ('Bulacan Provincial Police Office', 'Unnamed Road, Paombong, Bulacan, Philippines',
+'Paombong', 'Lorem Doe', '0922222222', 14.852578, 120.816063);
 
-INSERT INTO OFFICE_TB (name, address, contact_person, contact_no, lat, lng) 
+INSERT INTO OFFICE_TB (name, address, municipality, contact_person, contact_no, lat, lng) 
 VALUES ('Sumapang Matanda a Barangay Hall', 'Sumapa Ligas Rd, Malolos, Bulacan, Philippines',
- 'Doe Lorem', '0922222222', 14.857890, 120.822988);
+'Malolos', 'Doe Lorem', '0922222222', 14.857890, 120.822988);
 
 INSERT INTO END_USER_TB (first_name, last_name, middle_name, display_picture,
 address, contact_no, office_id, department, rank, username, password) VALUES (
@@ -94,3 +106,15 @@ INSERT INTO CLIENT_TB (first_name, last_name, middle_name, display_picture,
 address, lat, lng, contact_no, username, password, person_to_notify,
 relationship, identification_number) VALUES ('david', 'gasnerr', 'yeah', 'DISPLAY_PICTURES/default_avatar.png', '909 Sumapa Ligas Rd, Malolos, 3000 Bulacan, Philippines', 
 '14.861677','120.844219','09194348867', 'david', '5ebe2294ecd0e0f08eab7690d2a6ee69', 'Gasnerr Rin', 'Mother', '7654321');
+
+INSERT INTO NOTIFICATION_TB (client_id, address, municipality, lat, lng, submit_dtime)
+VALUES (1, 'Unnamed Road, Santa Cruz, Zambales, Philippines', 'Santa Cruz', 15.747144, 120.093018, '2016-08-28 18:16:45');
+
+INSERT INTO NOTIFICATION_TB (client_id, address, municipality, lat, lng, submit_dtime)
+VALUES (1, 'Unnamed Road, General Nakar, Quezon, Philippines', 'General Nakar', 14.623275, 121.477295, '2016-08-28 18:16:45');
+
+INSERT INTO NOTIFICATION_TB (client_id, address, municipality, lat, lng, submit_dtime)
+VALUES (2, 'Unnamed Road, Diadi, Nueva Vizcaya, Philippines', 'Diadi', 16.696535, 121.345459, '2016-08-28 18:16:45');
+
+INSERT INTO NOTIFICATION_TB (client_id, address, municipality, lat, lng, submit_dtime)
+VALUES (2, 'Pan-Philippine Hwy, Carranglan, Nueva Ecija, Philippines', 'Minuli', 16.085228, 120.927979, '2016-08-28 18:16:45');
