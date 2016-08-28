@@ -39,9 +39,10 @@
 					var jsonObj = JSON.parse(objReq.responseText);
 					if (jsonObj.Clients) {
 						setupTableClient(jsonObj.Clients);
-						if (jsonObj.ClientsFullDetail)
+						if (jsonObj.ClientsFullDetail) {
 							allClientsDetail = jsonObj.ClientsFullDetail;
 							plotClientsOnMap(jsonObj.ClientsFullDetail);
+						}
 					} 
 				}
 			}
@@ -51,6 +52,7 @@
 				var tblRows = "<tr>";
 				tblRows += getTableHeader(tblHeaders);
 				tblRows += '<th>VIEW</th>';
+				tblRows += "</tr>";
 				tblRows += tableJSON('#clientContainer', jsonClients, {edit : 'ZOOM ON MAP'});
 				$('#clientContainer').append('<tbody>' + tblRows + '</tbody>');
 				$('#clientContainer img').css({"width":"114","height":"114"});

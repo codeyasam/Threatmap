@@ -21,12 +21,8 @@
 			<button title="Drag Tool" id="dragThreatBtn" type="button"></button>
 			<!-- <button title="Select Tool" id="selectBranchBtn" type="button"></button> -->
 		</div>
-		<div id="threatFormDialog" style="display:none;">
-			<table>
-				<tr>
-					<td><input id="description" type="text" placeholder="enter threat description"/></td>
-				</tr>
-			</table>
+		<div id="threatFormDialog" style="display:none;" title="NOTICE">
+			<td><input id="description" type="text" placeholder="enter threat description"/>
 		</div>
 		<script src="https://maps.googleapis.com/maps/api/js?sensor=false&key=AIzaSyDDpPDWu9z820FMYyOVsAphuy0ryz4kt2o&libraries=places&sensor=false"></script>
 		
@@ -212,7 +208,7 @@
 					}],
 					close: function() {
 					}					
-				});
+				}).prev(".ui-dialog-titlebar").css("background","red");
 				var btnToHide = (opt_type == "CREATE") ? "#btnSave" : "#btnCreate";
 				$(btnToHide).hide();
 
@@ -220,7 +216,8 @@
 					$('#description').val(description);
 				} else {
 					$('#description').val('');
-				}				
+				}
+
 			}
 
 		</script>				

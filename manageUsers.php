@@ -1,8 +1,8 @@
 <?php require_once('includes/initialize.php'); ?>
 <?php
 	$user = $session->is_logged_in() ? User::find_by_id($session->user_id) : false;
-
 	if (!$user) redirect_to('login.php');
+	$user_fields = User::getUserFields();
 ?>
 <!DOCTYPE html>
 <html>
@@ -15,8 +15,11 @@
 		<?php getNavigation($user); ?>
 		<input type="hidden" id="ACCOUNTID" value="<?php echo htmlentities($user->id); ?>">
 
-		<input id="searchUser" type="text" name="" placeholder="search user by name" />
-
+		<input id="searchUser" type="text" name="" placeholder="search user by " disabled="disabled"/>
+		<select id="userFields">
+			<option value="all">all</option>
+			<?php echo getOptions($user_fields); ?>	
+		</select>
 		<a id="addUser" href="" style="float:right;">+ADD NEW USER</a>
 		<table id="userContainer">	
 		</table>
@@ -25,7 +28,7 @@
 			<table>
 			<tr>
 				<td><img id="output" src="DISPLAY_PICTURES/default_avatar.png"/></td>
-				<td><input id="pic" type="file" name="img_upload" accept="image/*" onchange="loadFile(event)" /></td>
+				<td id="picInputContainer"><input id="pic" type="file" name="img_upload" accept="image/*" onchange="loadFile(event)" /></td>
 			</tr>
 
 			<tr>
@@ -90,7 +93,8 @@
 		<script type="text/javascript" src="js/functions.js"></script>
 
 		<script type="text/javascript">
-			processRequest("backendprocess.php?getUsers=true");
+			processRequest("backendprocess.php?getUsers=true&getType=all");
+			var currentOption = 'all'
 			var hasUsername = false;
 
 			var loadFile = function(event) {
@@ -123,6 +127,8 @@
 							getBtnAction("EDIT", jsonObj.selectedUser.id);	
 						}
 						setupUserForm("EDIT", action_performed, jsonObj.selectedUser);
+						$('#password').val('');
+						$('#confPass').val('');
 						$('#userFormDialog').dialog('open');
 					}
 
@@ -216,6 +222,7 @@
 					$('#password').val('');
 					$('#confPass').val('');
 				}
+				$('#picInputContainer').html('<input id="pic" type="file" name="img_upload" accept="image/*" onchange="loadFile(event)" />');				
 			}
 
 
@@ -359,7 +366,19 @@
 		    $('#searchUser').on('input', function() {
 		    	console.log('changes');
 		    	var searchVal = $('#searchUser').val();
-		    	processRequest("backendprocess.php?searchUser=true&searchValue=" + searchVal);
+		    	processRequest("backendprocess.php?getUsers=true&searchValue=" + searchVal + "&getType=" + currentOption);
+		    });
+
+		    $('#userFields').on('change', function() {
+		    	currentOption = $('#userFields option:selected').val();
+		    	var searchVal = $('#searchUser').val();
+		    	if (currentOption == 'all') {
+		    		$('#searchUser').prop('disabled', true);
+		    		$('#searchUser').val('');
+		    	} else {
+		    		$('#searchUser').prop('disabled', false);
+		    	}
+		    	processRequest('backendprocess.php?getUsers=true&searchValue=' + searchVal + "&getType=" + currentOption);
 		    });
 		</script>
 	</body>
