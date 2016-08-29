@@ -13,21 +13,24 @@
 	</head>
 	<body>
 		<?php getNavigation($user, true); ?>
-
-		<h3>MANAGE THREATS</h3>
-		<div class="actionBtnContainer">
-			<button title="Add Tool" id="addThreatBtn" type="button"></button>
-			<button title="Delete Tool" id="delThreatBtn" type="button"></button>
-			<button title="Drag Tool" id="dragThreatBtn" type="button"></button>
-			<!-- <button title="Select Tool" id="selectBranchBtn" type="button"></button> -->
+		<div style="padding: 20px;background-color: #ECEFF2;">
+			<h3 style="float: left;">MANAGE THREATS</h3>
+			<div class="actionBtnContainer" style="float: right;">
+				<button class="actBtnSelected" title="Add Tool" id="addThreatBtn" type="button">ADD/SELECT</button>
+				<button title="Delete Tool" id="delThreatBtn" type="button">DELETE</button>
+				<button title="Drag Tool" id="dragThreatBtn" type="button">DRAG/SELECT</button>
+				<!-- <button title="Select Tool" id="selectBranchBtn" type="button"></button> -->
+			</div>
+			<p style="clear:both;"></p>
 		</div>
+		
 		<div id="threatFormDialog" style="display:none;" title="NOTICE">
 			<td><input id="description" type="text" placeholder="enter threat description"/>
 		</div>
 		<script src="https://maps.googleapis.com/maps/api/js?sensor=false&key=AIzaSyDDpPDWu9z820FMYyOVsAphuy0ryz4kt2o&libraries=places&sensor=false"></script>
 		
 		<!-- <div id="indexDetailContainer"></div> -->
-		<div id="map" class="main-window"></div>		
+		<div id="map" class="main-window" style="height: 87%;"></div>		
 		<script type="text/javascript" src="js/jquery-1.11.3.min.js"></script>
 		<script type="text/javascript" src="js/jquery-ui.min.js"></script>
 		<script type="text/javascript" src="js/functions.js"></script>
@@ -75,6 +78,7 @@
 
 			$('#addThreatBtn').on('click', function() {
 				unSelectAllActionBtn();
+				$('#addThreatBtn').addClass('actBtnSelected');
 				toAdd = true;
 				toDelete = false;
 				toDrag = false;
@@ -83,13 +87,15 @@
 
 			$('#delThreatBtn').on('click', function() {
 				unSelectAllActionBtn();
+				$('#delThreatBtn').addClass('actBtnSelected');
 				toDelete = true;
 				toAdd = false;
 				console.log("del option clicked");
 			});
 
-			$('dragThreatBtn').on('click', function() {
+			$('#dragThreatBtn').on('click', function() {
 				unSelectAllActionBtn();
+				$('#dragThreatBtn').addClass('actBtnSelected');
 				toDelete = false;
 				toDrag = true;
 				toAdd = false;
@@ -98,7 +104,9 @@
 
 
 			function unSelectAllActionBtn() {
-
+				$('#addThreatBtn').removeClass();
+				$('#delThreatBtn').removeClass();
+				$('#dragThreatBtn').removeClass();
 			}
 
 			function getReverseGeocodingData(e, operation) {

@@ -230,6 +230,27 @@
 #userContainer {
 	width: 100%;
 }
+
+/*manage threats*/
+.actionBtnContainer button {
+	background-color: none;
+	color: black;
+	border: none;
+	border: 1px solid black;
+	padding: 5px;
+	margin: 0 5px;
+}
+
+.actionBtnContainer button:hover {
+	background-color: red;
+	color: white;
+}
+
+.actionBtnContainer .actBtnSelected {
+	background-color: red;
+	color: white;
+	border: 1px solid red;
+}
 /**/
 
 
