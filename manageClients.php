@@ -29,6 +29,7 @@
 		<script type="text/javascript" src="js/functions.js"></script>
 		<script type="text/javascript" src="js/myGmapsInit.js"></script>
 		<script type="text/javascript">
+			$('#clientPage').addClass('selectedPage');
 			processRequest("backendprocess4.php?getClients=true&getType=all&loadPage=true");
 
 			var currentOption = 'all';

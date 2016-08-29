@@ -25,6 +25,7 @@
 		<script type="text/javascript" src="js/functions.js"></script>
 		<script type="text/javascript" src="js/myGmapsInit.js"></script>		
 		<script type="text/javascript">
+			$('#notifPage').addClass('selectedPage');
 			processRequest("backendprocess5.php?getNotifications=true&getType=all&loadPage=true");
 			var currentOption = 'all';
 			var allNotifsDetails;

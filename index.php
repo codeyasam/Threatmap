@@ -17,13 +17,14 @@
 		<script src="https://maps.googleapis.com/maps/api/js?sensor=false&key=AIzaSyDDpPDWu9z820FMYyOVsAphuy0ryz4kt2o&libraries=places&sensor=false"></script>
 		
 		<!-- <div id="indexDetailContainer"></div> -->
-		<div id="map" class="main-window"></div>
+		<div id="map" class="main-window" style="height: 95%"></div>
 
 		<script type="text/javascript" src="js/jquery-1.11.3.min.js"></script>
 		<script type="text/javascript" src="js/jquery-ui.min.js"></script>
 		<script type="text/javascript" src="js/functions.js"></script>
 		<script type="text/javascript" src="js/myGmapsInit.js"></script>
 		<script type="text/javascript">
+			$('#homePage').addClass('selectedPage');
 			processRequest("backendprocess.php?getLoggedInClients=true");
 
 			//setup handling of server response

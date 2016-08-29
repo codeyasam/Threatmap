@@ -1,16 +1,22 @@
-<a href="index.php">LOGO</a>
-<?php if ($nav_has_search_box) {  ?>
-	<input type="text" id="navSearchBox" placeholder="search address/places"/>
-<?php } ?>
-<nav>
+<nav class="navigation">
+
+	<ul style="float:left;">
+		<li><a id="pageLogo" href="index.php">THREAT MAP</a></li>
+		<?php if ($nav_has_search_box) {  ?>
+			<li><input type="text" id="navSearchBox" placeholder="search address/places"/></li>
+		<?php } ?>		
+	</ul>	
+	
 	<ul>
-		<li><img src="<?php echo htmlentities($user->display_picture); ?>"/><?php echo htmlentities($user->display_name()); ?></li>
-		<li><a href="index.php">HOME</a></li>
-		<li><a href="manageUsers.php">USERS</a></li>
-		<li><a href="manageThreats.php">THREATS</a></li>
-		<li><a href="manageOffices.php">OFFICES</a></li>
-		<li><a href="manageClients.php">CLIENTS</a></li>
-		<li><a href="manageNotifications.php">NOTIFICATIONS</a></li>
+		<li><?php echo htmlentities($user->display_name()); ?>  <span style="color: #999999;">&nbsp|</span></li>
+		<li><a id="homePage" href="index.php">HOME</a></li>
+		<li><a id="userPage" href="manageUsers.php">USERS</a></li>
+		<li><a id="threatPage" href="manageThreats.php">THREATS</a></li>
+		<li><a id="officePage" href="manageOffices.php">OFFICES</a></li>
+		<li><a id="clientPage" href="manageClients.php">CLIENTS</a></li>
+		<li><a id="notifPage" href="manageNotifications.php">NOTIFICATIONS</a></li>
 		<li><a href="logout.php">LOGOUT</a></li>
 	</ul>
+	<img src="<?php echo htmlentities($user->display_picture); ?>"/>	
 </nav>
+<p style="clear:both;"></p>

@@ -18,17 +18,26 @@
 <html>
 	<head>
 		<title></title>
+		<link rel="stylesheet" type="text/css" href="css/main.css">
 	</head>
 	<body>
-		<header>
-			
-		</header>
-		<form action="login.php" method="POST">
-			<p><input type="text" name="username" placeholder="Username" /></p>
-			<p><input type="password" name="password" placeholder="Password" /></p>
-			<p><?php echo $prompt_to_user; ?></p>
-			<input type="submit" name="submit" value="SIGN IN"/>			
-		</form>
+		<div id="loginPage" class="page-wrapper">
+			<header id="loginHeader">
+				<h3>THREAT MAP</h3>
+			</header>
 
+			<div id="loginContainer">
+			<h3>THREAT MAP ADMIN</h3>
+			<form action="login.php" method="POST" >
+				<p><input type="text" name="username" placeholder="Username" /></p>
+				<p><input type="password" name="password" placeholder="Password" /></p>
+				<p><?php echo $prompt_to_user; ?></p>
+				<input type="submit" name="submit" value="LOGIN"/>			
+			</form>				
+			</div>
+		</div>
+		<footer id="loginFooter">
+				
+		</footer>
 	</body>
 </html>

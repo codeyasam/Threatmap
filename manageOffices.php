@@ -65,6 +65,7 @@
 		<script type="text/javascript" src="js/functions.js"></script>
 		<script type="text/javascript" src="js/myGmapsInit.js"></script>
 		<script type="text/javascript">
+			$('#officePage').addClass('selectedPage');
 			markerOptions.animation = google.maps.Animation.DROP;
 			markerOptions.draggable = true;
 

@@ -12,80 +12,88 @@
 		<link rel="stylesheet" type="text/css" href="js/jquery-ui.css">
 	</head>
 	<body>
+		<div id="userWrapper" class="page-wrapper">
 		<?php getNavigation($user); ?>
-		<input type="hidden" id="ACCOUNTID" value="<?php echo htmlentities($user->id); ?>">
+			<div style="padding: 20px;">
+				<input type="hidden" id="ACCOUNTID" value="<?php echo htmlentities($user->id); ?>">
 
-		<input id="searchUser" type="text" name="" placeholder="search user by " disabled="disabled"/>
-		<select id="userFields">
-			<option value="all">all</option>
-			<?php echo getOptions($user_fields); ?>	
-		</select>
-		<a id="addUser" href="" style="float:right;">+ADD NEW USER</a>
-		<table id="userContainer">	
-		</table>
+				<input id="searchUser" type="text" name="" placeholder="search user by " disabled="disabled"/>
+				<select id="userFields">
+					<option value="all">all</option>
+					<?php echo getOptions($user_fields); ?>	
+				</select>
+				<a id="addUser" href="" style="float:right;">+ADD NEW USER</a>			
+			</div>
 
-		<div id="userFormDialog" style="display: none;">
-			<table>
-			<tr>
-				<td><img id="output" src="DISPLAY_PICTURES/default_avatar.png"/></td>
-				<td id="picInputContainer"><input id="pic" type="file" name="img_upload" accept="image/*" onchange="loadFile(event)" /></td>
-			</tr>
+			<div style="padding-left: 20px; padding-right:20px;">
+				<table id="userContainer">	
+				</table>
+			</div>
 
-			<tr>
-				<td>First name: </td>
-				<td><input id="first_name" type="text" name="first_name"/></td>
-			</tr>
-			
-			<tr>
-				<td>Middle name: </td>
-				<td><input id="middle_name" type="text" name="middle_name"/></td>
-			</tr>
-			<tr>
-				<td>Last name: </td>
-				<td><input id="last_name" type="text" name="last_name"/></td>
-			</tr>
-			<tr>
-				<td>Address: </td>
-				<td><input id="address" type="text" name="address"/></td>
-			</tr>
-			<tr>
-				<td>Contact no: </td>	
-				<td><input id="contact_no" type="text" name="contact_no"/></td>
-			</tr>
-			<tr>
-				<td>Office: </td>
-				<td><select id="office_id" name="office_id"></select></td>
-			</tr>
-			<tr>
-				<td>Department: </td>
-				<td><input id="department" type="text" name="department"/></td>
-			</tr>
-			<tr>
-				<td>Rank: </td>
-				<td><input id="rank" type="text" name="rank"/></td>
-			</tr>
-			<tr>
-				<td>Username: </td>
-				<td><input id="username" type="text" name="username"/></td>
-			</tr>
-			<tr>
-				<td></td>
-				<td id="usernameNotice"></td>
-			</tr>			
-			<tr>
-				<td>Password: </td>
-				<td><input id="password" type="password" name="password"/></td>
-			</tr>
-			<tr>
-				<td>Confirm Pass: </td>
-				<td><input id="confPass" type="password" name="confPass">
-				</td>
-			</tr>
-			<tr>
-				<td></td>
-				<td id="passNotice"></td>
-			</tr>
-			</table>
+			<div id="userFormDialog" style="display: none;" title="CREATE A USER">
+				<table>
+				<tr>
+					<td><img id="output" src="DISPLAY_PICTURES/default_avatar.png"/></td>
+					<td id="picInputContainer"><input id="pic" type="file" name="img_upload" accept="image/*" onchange="loadFile(event)" /></td>
+				</tr>
+
+				<tr>
+					<td>First name: </td>
+					<td><input id="first_name" type="text" name="first_name"/></td>
+				</tr>
+				
+				<tr>
+					<td>Middle name: </td>
+					<td><input id="middle_name" type="text" name="middle_name"/></td>
+				</tr>
+				<tr>
+					<td>Last name: </td>
+					<td><input id="last_name" type="text" name="last_name"/></td>
+				</tr>
+				<tr>
+					<td>Address: </td>
+					<td><input id="address" type="text" name="address"/></td>
+				</tr>
+				<tr>
+					<td>Contact no: </td>	
+					<td><input id="contact_no" type="text" name="contact_no"/></td>
+				</tr>
+				<tr>
+					<td>Office: </td>
+					<td><select id="office_id" name="office_id"></select></td>
+				</tr>
+				<tr>
+					<td>Department: </td>
+					<td><input id="department" type="text" name="department"/></td>
+				</tr>
+				<tr>
+					<td>Rank: </td>
+					<td><input id="rank" type="text" name="rank"/></td>
+				</tr>
+				<tr>
+					<td>Username: </td>
+					<td><input id="username" type="text" name="username"/></td>
+				</tr>
+				<tr>
+					<td></td>
+					<td id="usernameNotice"></td>
+				</tr>			
+				<tr>
+					<td>Password: </td>
+					<td><input id="password" type="password" name="password"/></td>
+				</tr>
+				<tr>
+					<td>Confirm Pass: </td>
+					<td><input id="confPass" type="password" name="confPass">
+					</td>
+				</tr>
+				<tr>
+					<td></td>
+					<td id="passNotice"></td>
+				</tr>
+				</table>
+			</div>
+
 		</div>
 
 		<script type="text/javascript" src="js/jquery-1.11.3.min.js"></script>
@@ -93,6 +101,7 @@
 		<script type="text/javascript" src="js/functions.js"></script>
 
 		<script type="text/javascript">
+			$('#userPage').addClass('selectedPage');
 			processRequest("backendprocess.php?getUsers=true&getType=all");
 			var currentOption = 'all'
 			var hasUsername = false;
@@ -216,8 +225,10 @@
 				$(btnToHide).hide();
 
 				if (jsonUser) {
+					$('#userFormDialog').dialog('option', 'title', 'EDIT USER');
 					setupUserFormValues(jsonUser);
 				}  else {
+					$('#userFormDialog').dialog('option', 'title', 'CREATE A USER');
 					$('#username').attr('data-internalid', "");
 					$('#password').val('');
 					$('#confPass').val('');
