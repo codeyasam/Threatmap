@@ -47,8 +47,9 @@
 }
 
 .page-wrapper #officeLeft {
-	width: 70%;
+	width: 69%;
 	float: left;
+	padding-right: 10px;
 }
 
 .page-wrapper .officeRight {
@@ -140,6 +141,7 @@
 #loginContainer input[type="submit"]:hover,input[type="button"]:hover {
 	background: #fffde8;
 	color: #97470c;
+	border: 1px solid red;
 }
 
 #loginContainer input[type="text"], #loginContainer input[type="password"] {
@@ -250,6 +252,39 @@
 	background-color: red;
 	color: white;
 	border: 1px solid red;
+}
+
+
+/*manage offce*/
+#officeContainer {
+	width: 100%;
+}
+
+#officeWrapper {
+	height: 100%;
+	margin: 20px;
+}
+
+.officeUpper {
+	padding: 20px;
+}
+
+.officeRight .actionBtnContainer {
+	margin-top: 10px;
+}
+
+.officeRight .actionBtnContainer input[type="submit"] {
+	border: none;
+	background: red;
+	color: white;
+	border: 1px solid red;
+	padding: 10px 20px;
+}
+
+.officeRight .actionBtnContainer input[type="submit"]:hover {
+	border: 1px solid red;
+	background: white;
+	color: red;
 }
 /**/
 

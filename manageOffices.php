@@ -14,48 +14,52 @@
 		<link rel="stylesheet" type="text/css" href="js/jquery-ui.css">		
 	</head>
 	<body>
-		<?php getNavigation($user); ?>
 		<div class="page-wrapper">
-			<div id="officeLeft">
-				<input id="searchOffice" type="text" placeholder="Search offices by" disabled="disabled"/>
-				<select id="officeFields">
-					<option value="all">all</option>
-					<?php echo getOptions($office_fields); ?>		
-				</select>
-				<table id="officeContainer"></table>				
-			</div>
-			<div class="officeRight">			
-				<table>
-					<tr>
-						<th colspan="2">ADD OFFICE</th>
-					</tr>
-					<tr>
-						<td>Name: </td>
-						<td><input id="name" type="text"/></td>
-					</tr>
-					<tr>
-						<td>Address: </td>
-						<td id="address">click the map for location assignment</td>
-					</tr>
-					<tr>
-						<td>Contact Person: </td>
-						<td><input id="contact_person" type="text"/></td>
-					</tr>
-					<tr>
-						<td>Contact No: </td>
-						<td><input id="contact_no" type="text"/></td>
-					</tr>
-					<tr>
-						<td>Click the map to plot Office Location</td>
-						<td><input id="navSearchBox" type="text" placeholder="search location/address"/></td>
-					</tr>
-				</table>
-				<div class="mapContainer"><div id="map" class="main-window"></div></div>
-				<hr/>
-				<div class="actionBtnContainer">
-					<input id="btnCancel" type="submit" value="CANCEL" style="display:none;"/>
-					<input id="btnAdd" type="submit" value="CREATE"/>
-					<input id="btnSave" type="submit" value="SAVE" style="display:none;"/>	
+			<?php getNavigation($user); ?>
+			<div id="officeWrapper">
+				<div id="officeLeft">
+					<div class="officeUpper">
+						<input id="searchOffice" type="text" placeholder="Search offices by" disabled="disabled"/>
+						<select id="officeFields">
+							<option value="all">all</option>
+							<?php echo getOptions($office_fields); ?>		
+						</select>
+					</div>
+					<table id="officeContainer"></table>				
+				</div>
+				<div class="officeRight">			
+					<table>
+						<tr>
+							<th colspan="2" class="officeUpper">ADD OFFICE</th>
+						</tr>
+						<tr>
+							<td>Name: </td>
+							<td><input id="name" type="text"/></td>
+						</tr>
+						<tr>
+							<td>Address: </td>
+							<td id="address">click the map for location assignment</td>
+						</tr>
+						<tr>
+							<td>Contact Person: </td>
+							<td><input id="contact_person" type="text"/></td>
+						</tr>
+						<tr>
+							<td>Contact No: </td>
+							<td><input id="contact_no" type="text"/></td>
+						</tr>
+						<tr>
+							<td>Click the map to plot Office Location</td>
+							<td><input id="navSearchBox" type="text" placeholder="search location/address"/></td>
+						</tr>
+					</table>
+					<div class="mapContainer"><div id="map" class="main-window"></div></div>
+					<hr/>
+					<div class="actionBtnContainer">
+						<input id="btnCancel" type="submit" value="CANCEL" style="display:none;"/>
+						<input id="btnAdd" type="submit" value="CREATE"/>
+						<input id="btnSave" type="submit" value="SAVE" style="display:none;"/>	
+					</div>
 				</div>
 			</div>
 		</div>
@@ -194,11 +198,27 @@
 			});
 
 			$('#btnCancel').on('click', function() {
+				$('#btnCancel').hide();
+				$('#btnSave').hide();
+				$('#btnAdd').show();
 				officeObj = {id:"",name:"",contact_person:"",contact_no:"",address:"",municipality:"",lat:"",lng:""};
 				setOfficeDetails(officeObj);
 			});	
 
 			$('#btnSave').on('click', function() {
+				officeObj.name = $('#name').val();
+				officeObj.contact_person = $('#contact_person').val();
+				officeObj.contact_no = $('#contact_no').val();		
+				var searchStr = $('#searchOffice').val();
+				
+				if (officeObj.name == "" || officeObj.contact_person == "" || officeObj.contact_no == "" || officeObj.municipality == "" || officeObj.lat == "" || officeObj.lng == "") {
+					custom_alert_dialog("Fill all required fields");
+					return;
+				} else if (officeObj.address == "") {
+					custom_alert_dialog("set the office address by plotting it on the map.");
+					return;
+				}				
+
 				processPOSTRequest('backendprocess3.php', "updateOffice=true&jsonOffice=" + JSON.stringify(officeObj));
 			});
 
