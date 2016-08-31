@@ -73,6 +73,15 @@ CREATE TABLE NOTIFICATION_TB (
 	status INT(11) NOT NULL
 );
 
+CREATE TABLE SESSION_USER_TB (
+	id INT(11) AUTO_INCREMENT PRIMARY KEY,
+	user_id INT(11) NOT NULL,
+	CONSTRAINT session_user_id FOREIGN KEY(user_id)
+	REFERENCES END_USER_TB(id),
+	lat FLOAT(10, 6) NOT NULL,
+	lng FLOAT(10, 6) NOT NULL
+);
+
 #DEFAULT VALUES
 
 INSERT INTO OFFICE_TB (name, address, municipality, contact_person, contact_no, lat, lng) 
