@@ -12,17 +12,21 @@
 		<link rel="stylesheet" type="text/css" href="js/jquery-ui.css">		
 	</head>
 	<body>
-		<?php getNavigation($user); ?>
-		<input id="searchClient" type="text" placeholder="search clients by " disabled="disabled" />
-		<select id="clientFields">
-			<option value='all'>all</option>
-			<?php echo getOptions($client_fields); ?>
-		</select>
-		<div style="width: 100%; height: 100%;">
-			<table id="clientContainer" style="width: 58%; float: left;"></table>			
-			<div class="mapContainer"><div id="map" class="main-window"></div></div>		
-		</div>
 		
+		<div class="page-wrapper">
+			<?php getNavigation($user); ?>
+			<div id="clientWrapper">
+				<div id="clientHeader">
+					<input id="searchClient" type="text" placeholder="search clients by " disabled="disabled" />
+					<select id="clientFields">
+						<option value='all'>all</option>
+						<?php echo getOptions($client_fields); ?>
+					</select>				
+				</div>
+				<table id="clientContainer" style="width: 58%; float: left;"></table>			
+				<div class="mapContainer"><div id="map" class="main-window"></div></div>		
+			</div>
+		</div>
 		<script src="https://maps.googleapis.com/maps/api/js?sensor=false&key=AIzaSyDDpPDWu9z820FMYyOVsAphuy0ryz4kt2o&libraries=places&sensor=false"></script>		
 		<script type="text/javascript" src="js/jquery-1.11.3.min.js"></script>
 		<script type="text/javascript" src="js/jquery-ui.min.js"></script>

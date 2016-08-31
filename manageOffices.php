@@ -10,8 +10,8 @@
 <html>
 	<head>
 		<title></title>
-		<link rel="stylesheet" type="text/css" href="css/main.css"/>
-		<link rel="stylesheet" type="text/css" href="js/jquery-ui.css">		
+		<link rel="stylesheet" type="text/css" href="js/jquery-ui.css">	
+		<link rel="stylesheet" type="text/css" href="css/main.css"/>	
 	</head>
 	<body>
 		<div class="page-wrapper">

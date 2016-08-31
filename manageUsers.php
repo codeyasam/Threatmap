@@ -8,8 +8,8 @@
 <html>
 	<head>
 		<title></title>
+		<link rel="stylesheet" type="text/css" href="js/jquery-ui.css">		
 		<link rel="stylesheet" type="text/css" href="css/main.css"/>
-		<link rel="stylesheet" type="text/css" href="js/jquery-ui.css">
 	</head>
 	<body>
 		<div id="userWrapper" class="page-wrapper">
@@ -142,7 +142,8 @@
 					}
 
 					if (jsonObj.forcedLogout) {
-						window.location = "logout.php";
+						custom_alert_dialog("WARNING: You can't delete your own account.");
+						//window.location = "logout.php";
 					}
 				}
 			}
@@ -177,8 +178,14 @@
 				console.log("id: " + $(this).attr("data-internalId"));
 				var user_id = $('#ACCOUNTID').val();
 				var selected_user_id = $(this).attr("data-internalId");
-				var confirm_msg = user_id == selected_user_id ? "WARNING: you're about to delete your own account, are you sure? (Due to deletion of your account, you'll be logged out immediately and won't be able to log in again)" : "Are you sure you want to delete this account?";
+				var confirm_msg = user_id == selected_user_id ? "WARNING: you can't delete your own account." : "Are you sure you want to delete this account";
+				//"WARNING: you're about to delete your own account, are you sure? (Due to deletion of your account, you'll be logged out immediately and won't be able to log in again)" : "Are you sure you want to delete this account?";
 				var redirect_to_logout = user_id == selected_user_id ? true : false;
+				if (redirect_to_logout) { 
+					custom_alert_dialog("WARNING: You can't delete your own account.");
+					return false;
+				}
+				
 				var action_performed = function() {
 					$('#dialog').dialog('close');
 					processPOSTRequest("backendprocess.php", "deleteAccount=true&user_id=" + selected_user_id + "&logout=" + redirect_to_logout);
@@ -391,6 +398,7 @@
 		    	}
 		    	processRequest('backendprocess.php?getUsers=true&searchValue=' + searchVal + "&getType=" + currentOption);
 		    });
+
 		</script>
 	</body>
 </html>

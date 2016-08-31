@@ -8,8 +8,8 @@
 <html>
 	<head>
 		<title></title>
-		<link rel="stylesheet" type="text/css" href="css/main.css">
 		<link rel="stylesheet" type="text/css" href="js/jquery-ui.css">
+		<link rel="stylesheet" type="text/css" href="css/main.css">
 	</head>
 	<body>
 		<?php getNavigation($user, true); ?>
@@ -217,7 +217,7 @@
 					}],
 					close: function() {
 					}					
-				}).prev(".ui-dialog-titlebar").css("background","red");
+				});
 				var btnToHide = (opt_type == "CREATE") ? "#btnSave" : "#btnCreate";
 				$(btnToHide).hide();
 

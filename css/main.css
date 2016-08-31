@@ -289,5 +289,43 @@
 /**/
 
 
+/*MANAGE CLIENT*/
+#clientWrapper {
+	margin: 20px;
+	height: 90%;	
+}
+
+#clientHeader {
+	margin-top: 40px;
+	margin-bottom: 20px;
+}
+
+#clientWrapper .mapContainer {	
+	margin-left: 20px;
+	width: 40%;
+}
+/**/
+
+/*MANAGE NOTIFS*/
+#notifWrapper {
+	width: 100%;
+	height: 94%;
+}
+
+#notifWrapper .mapContainer {	
+	width: 42%;
+	height: 100%;
+}
+/**/
 
 
+/*jquery dialog style customization*/
+.ui-dialog-titlebar {
+	background: red;
+}
+
+.ui-dialog .ui-dialog-titlebar-close {
+    background: white;
+    border: none !important;
+}
+/**/

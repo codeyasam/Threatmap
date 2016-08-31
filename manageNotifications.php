@@ -12,14 +12,15 @@
 	</head>
 	<body>
 		<script src="https://maps.googleapis.com/maps/api/js?sensor=false&key=AIzaSyDDpPDWu9z820FMYyOVsAphuy0ryz4kt2o&libraries=places&sensor=false"></script>
-		<?php getNavigation($user, true); ?>
 		
-		<div style="width: 100%; height: 100%;">
-			<table id="notifContainer" style="width: 58%; float: left;"></table>
-			<div class="mapContainer"><div id="map" class="main-window"></div></div>	
+		<div class="page-wrapper">
+			<?php getNavigation($user, true); ?>
+			<div id="notifWrapper">
+				<table id="notifContainer" style="width: 58%; float: left;"></table>
+				<div class="mapContainer"><div id="map" class="main-window"></div></div>	
+			</div>			
 		</div>
-		
-		
+
 		<script type="text/javascript" src="js/jquery-1.11.3.min.js"></script>
 		<script type="text/javascript" src="js/jquery-ui.min.js"></script>
 		<script type="text/javascript" src="js/functions.js"></script>
