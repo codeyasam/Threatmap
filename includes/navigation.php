@@ -1,3 +1,4 @@
+<?php $unread_notifs = Notification::find_all(array('key'=>'status', 'value'=>0, 'isNumeric'=>true)); ?>
 <nav class="navigation">
 
 	<ul style="float:left;">
@@ -14,7 +15,11 @@
 		<li><a id="threatPage" href="manageThreats.php">THREATS</a></li>
 		<li><a id="officePage" href="manageOffices.php">OFFICES</a></li>
 		<li><a id="clientPage" href="manageClients.php">CLIENTS</a></li>
-		<li><a id="notifPage" href="manageNotifications.php">NOTIFICATIONS</a></li>
+		<li><a id="notifPage" href="manageNotifications.php">NOTIFICATIONS 
+			<?php if (count($unread_notifs) > 0) { ?>
+				<div class="notifCircle"><?php echo count($unread_notifs); ?></div>
+		    <?php } ?>
+		</a></li>
 		<li><a href="logout.php">LOGOUT</a></li>
 	</ul>
 	<img src="<?php echo htmlentities($user->display_picture); ?>"/>	

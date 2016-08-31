@@ -316,6 +316,10 @@
 	width: 42%;
 	height: 100%;
 }
+
+#notifContainer td {
+	text-align: center;
+}
 /**/
 
 
@@ -329,3 +333,18 @@
     border: none !important;
 }
 /**/
+.notifCircle {
+	display: inline-block;
+    border-radius: 50%;
+    width: 15px;
+    height: 15px;
+    text-align: center;
+    background: red;
+    color: white;
+    font: 12px Arial, sans-serif;
+}
+
+#notifPage:hover .notifCircle {
+	color: red;
+	background: white;
+}

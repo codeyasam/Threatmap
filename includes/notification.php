@@ -3,7 +3,7 @@
 <?php  
 	class Notification extends DatabaseObject {
 		protected static $table_name = "NOTIFICATION_TB";
-		protected static $db_fields = array('id', 'client_id', 'address', 'municipality', 'lat', 'lng', 'submit_dtime');
+		protected static $db_fields = array('id', 'client_id', 'address', 'municipality', 'lat', 'lng', 'submit_dtime', 'status');
 
 		public $id;
 		public $client_id;
@@ -12,6 +12,7 @@
 		public $lat;
 		public $lng;
 		public $submit_dtime;
+		public $status = 0;
 
 		public function create() {
 			$this->submit_dtime = get_mysql_datetime(time());
@@ -19,7 +20,7 @@
 		}
 		
 		public function getCustomFields() {
-			return array('id', 'display_picture', 'client_name', 'address', 'lat', 'lng', 'submit_dtime');
+			return array('id', 'display_picture', 'client_name', 'address', 'lat', 'lng', 'submit_dtime', 'status');
 		}
 
 		public function toJSON($customized=false) {
@@ -33,13 +34,24 @@
 						$fValueArr[] = '"' . $eachField . '":"' . htmlentities($clientObj->display_name()) . '"';
 					} else if ($eachField == "submit_dtime") {
 						$fValueArr[] = '"' . $eachField . '":"' . htmlentities(format_date($this->$eachField)) . '"';
+					} else if ($eachField == "status") {
+						if ($this->$eachField) {
+							$fValueArr[] = '"' . $eachField . '":"READ"'; 
+						} else {
+							$fValueArr[] = '"' . $eachField . '":"' . '<div class=\"notifCircle\">!</div>"';
+						}
 					} else {
 						$fValueArr[] = '"' . $eachField . '":"' . htmlentities($this->$eachField) . '"';		
-					}
+					} 
 				}
 				return join(", ", $fValueArr);
 			}
 			return parent::toJSON();
+		}
+
+		public static function allStatusRead() {
+			global $database;
+			$database->query("UPDATE " . self:: $table_name . " SET status=1");
 		}
 	}
 ?>

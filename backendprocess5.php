@@ -15,6 +15,7 @@
 		if (isset($_GET['loadPage'])) {
 			$output .= ", " . createJSONEntity("PureNotifs", $notifications);
 		}
+		Notification::allStatusRead();
 	}
 
 	$output .= '}';

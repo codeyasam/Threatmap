@@ -26,6 +26,7 @@
 		<script type="text/javascript" src="js/functions.js"></script>
 		<script type="text/javascript" src="js/myGmapsInit.js"></script>		
 		<script type="text/javascript">
+			$('#notifPage').text("NOTIFICATIONS");
 			$('#notifPage').addClass('selectedPage');
 			processRequest("backendprocess5.php?getNotifications=true&getType=all&loadPage=true");
 			var currentOption = 'all';
@@ -68,7 +69,7 @@
 			}			
 
 			function setupNotifsTable(jsonNotifs) {
-				var tblHeaders = ['ID', 'PICTURE', 'CLIENT NAME', 'ADDRESS', 'LAT', 'LNG', 'DATE'];
+				var tblHeaders = ['ID', 'PICTURE', 'CLIENT NAME', 'ADDRESS', 'LAT', 'LNG', 'DATE', 'STATUS'];
 				var tblRows = "<tr>";
 				tblRows += getTableHeader(tblHeaders);
 				tblRows += '<th>VIEW</th>';
