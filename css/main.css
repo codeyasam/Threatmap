@@ -348,3 +348,12 @@
 	color: red;
 	background: white;
 }
+
+#threatFormDialog input[type="text"] {
+	background-color: white;
+	border: none;
+	padding: 10px;
+	width: 100%;
+	box-sizing : border-box;
+	border-bottom: 1px solid red;	
+}

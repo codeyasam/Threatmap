@@ -115,7 +115,8 @@
 				var geocoder = new google.maps.Geocoder();
 				geocoder.geocode({'latLng': latLng}, function(results, status) {
 					if (status !== google.maps.GeocoderStatus.OK) {
-						alert(status);
+						//alert(status);
+						custom_alert_dialog("Cant plot a threat here. Location seems outside of the Philippines.");
 					}
 					//checking to see if the geocode status is ok before proceeding
 					if (status == google.maps.GeocoderStatus.OK) {
@@ -141,6 +142,8 @@
 				if (toDelete == false && toDrag == false) {	
 					console.log("map to add");
 					getReverseGeocodingData(e, "CREATE");
+				} else if (toDelete == true) {
+					custom_alert_dialog("Operation is on Delete, no marker is selected");
 				}
 			});
 

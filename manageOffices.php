@@ -251,13 +251,17 @@
 				var geocoder = new google.maps.Geocoder();
 				geocoder.geocode({'latLng':latLng}, function(results, status) {
 					if (status !== google.maps.GeocoderStatus.OK) {
-						alert(status);
+						//alert(status);
+						custom_alert_dialog("Cant plot an office here. Location seems outside of the Philippines.");
 					}
 
 					if (status == google.maps.GeocoderStatus.OK) {
 						console.log(results[0]);
-						console.log(results[0].address_components[1].long_name);
 						officeObj.address = results[0].formatted_address;
+						if (results[0].address_components[1] == undefined) {
+							custom_alert_dialog("Cant plot an office here. Location doesn't belong to any municipality");
+							return;
+						}
 						officeObj.municipality = results[0].address_components[1].long_name;
 						officeObj.lat = e.latLng.lat();
 						officeObj.lng = e.latLng.lng();
