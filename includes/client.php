@@ -60,6 +60,19 @@
 			return array('id', 'display_picture', 'full_name', 'address', 'contact_no', 'person_to_notify', 'relationship', 'identification_number');			
 		}
 
+		public static function searc_user_by_full_name($full_name) {
+			global $database;
+			$full_name = $database->escape_value($full_name);
+			$sql = "SELECT * FROM " . self::$table_name . " ";
+			$sql .= "WHERE CONCAT(last_name, ' ', first_name, ' ', middle_name) LIKE ";
+			$sql .= "'%" . $full_name . "%' " . "OR ";
+			$sql .= "CONCAT(first_name, ' ', middle_name, ' ', last_name) LIKE ";
+			$sql .= "'%" . $full_name . "%' " . "OR ";
+			$sql .= "CONCAT(first_name, ' ', last_name, ' ', middle_name) LIKE ";
+			$sql .= "'%" . $full_name . "%' ";
+			return self::find_by_sql($sql);
+		}		
+
 		public function toJSON($customized=false) {
 			if ($customized) {
 				$fValueArr = array();

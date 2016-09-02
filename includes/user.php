@@ -122,8 +122,23 @@
 			return self::find_by_sql($sql);
 		}
 
+		public static function searc_user_by_full_name($full_name) {
+			global $database;
+			$full_name = $database->escape_value($full_name);
+			$sql = "SELECT * FROM " . self::$table_name . " ";
+			$sql .= "WHERE CONCAT(last_name, ' ', first_name, ' ', middle_name) LIKE ";
+			$sql .= "'%" . $full_name . "%' " . "OR ";
+			$sql .= "CONCAT(first_name, ' ', middle_name, ' ', last_name) LIKE ";
+			$sql .= "'%" . $full_name . "%' " . "OR ";
+			$sql .= "CONCAT(first_name, ' ', last_name, ' ', middle_name) LIKE ";
+			$sql .= "'%" . $full_name . "%' ";
+			return self::find_by_sql($sql);
+		}
+
 		public static function search_by_office_Ids($ids=array()) {
 			global $database;
+
+			if (count($ids) < 1) return array();
 
 			$sql  = "SELECT * FROM " . self::$table_name . " ";
 			$sql .= "WHERE ";
