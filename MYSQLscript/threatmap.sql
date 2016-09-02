@@ -23,7 +23,9 @@ CREATE TABLE OFFICE_TB (
 	id INT(11) AUTO_INCREMENT PRIMARY KEY,
 	name VARCHAR(255) NOT NULL,
 	address VARCHAR(255) NOT NULL,
-	municipality VARCHAR(255) NOT NULL,
+	municipality VARCHAR(255),
+	province VARCHAR(255),
+	country VARCHAR(255),
 	contact_person VARCHAR(255) NOT NULL,
 	contact_no VARCHAR(255) NOT NULL,
 	lat FLOAT(10, 6) NOT NULL,
@@ -56,6 +58,9 @@ CREATE TABLE THREAT_TB (
 	id INT(11) AUTO_INCREMENT PRIMARY KEY,
 	description VARCHAR(255) NOT NULL,
 	address VARCHAR(255) NOT NULL,
+	municipality VARCHAR(255),
+	province VARCHAR(255),
+	country VARCHAR(255),
 	lat FLOAT(10, 6) NOT NULL,
 	lng FLOAT(10, 6) NOT NULL
 );
@@ -66,7 +71,7 @@ CREATE TABLE NOTIFICATION_TB (
 	CONSTRAINT notifs_client_id FOREIGN KEY(client_id)
 	REFERENCES CLIENT_TB(id),
 	address VARCHAR(255) NOT NULL,
-	municipality VARCHAR(255) NOT NULL,
+	municipality VARCHAR(255),
 	lat FLOAT(10,6) NOT NULL,
 	lng FLOAT(10,6) NOT NULL,
 	submit_dtime DATETIME NOT NULL,
@@ -84,17 +89,17 @@ CREATE TABLE SESSION_USER_TB (
 
 #DEFAULT VALUES
 
-INSERT INTO OFFICE_TB (name, address, municipality, contact_person, contact_no, lat, lng) 
+INSERT INTO OFFICE_TB (name, address, municipality, province, country, contact_person, contact_no, lat, lng) 
 VALUES ('Malolos Crossing Police Station', 'Manila N Rd, Malolos, Bulacan, Philippines',
-'Malolos', 'John Doe', '0922222222', 14.852578, 120.816063);
+'Malolos', 'Bulacan', 'Philippines', 'John Doe', '0922222222', 14.852578, 120.816063);
 
-INSERT INTO OFFICE_TB (name, address, municipality, contact_person, contact_no, lat, lng) 
+INSERT INTO OFFICE_TB (name, address, municipality, province, country, contact_person, contact_no, lat, lng) 
 VALUES ('Bulacan Provincial Police Office', 'Unnamed Road, Paombong, Bulacan, Philippines',
-'Paombong', 'Lorem Doe', '0922222222', 14.852578, 120.816063);
+'Paombong', 'Bulacan', 'Philippines', 'Lorem Doe', '0922222222', 14.852578, 120.816063);
 
-INSERT INTO OFFICE_TB (name, address, municipality, contact_person, contact_no, lat, lng) 
+INSERT INTO OFFICE_TB (name, address, municipality, province, country, contact_person, contact_no, lat, lng) 
 VALUES ('Sumapang Matanda a Barangay Hall', 'Sumapa Ligas Rd, Malolos, Bulacan, Philippines',
-'Malolos', 'Doe Lorem', '0922222222', 14.857890, 120.822988);
+'Malolos', 'Bulacan', 'Philippines', 'Doe Lorem', '0922222222', 14.857890, 120.822988);
 
 INSERT INTO END_USER_TB (first_name, last_name, middle_name, display_picture,
 address, contact_no, office_id, department, rank, username, password) VALUES (
