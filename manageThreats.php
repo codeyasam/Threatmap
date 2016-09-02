@@ -121,13 +121,22 @@
 					//checking to see if the geocode status is ok before proceeding
 					if (status == google.maps.GeocoderStatus.OK) {
 						var address = (results[0].formatted_address);
+						var threatObj = {id:"", lat: "", lng:"", address:"", municipality:"", province:"", country:"", description:""};
+						getLocalityAdmin2(results[0].address_components, threatObj);
+						threatObj.address = address;
+						threatObj.lat = e.latLng.lat();
+						threatObj.lng = e.latLng.lng();
+
+						//console.log(threatObj);
 
 						if (operation == "UPDATE") {
-							processPOSTRequest("backendprocess2.php", "updateThreat=true&address=" + address + "&lat=" + e.latLng.lat() + "&lng=" + e.latLng.lng() + "&threat_id=" + markers[selectedIndex].id);
+							threatObj.id = markers[selectedIndex].id;
+							processPOSTRequest("backendprocess2.php", "updateThreat=true&threatObj=" + JSON.stringify(threatObj));
 						} else if (operation == "CREATE") {
 							var action_performed = function() {
 								var description = $('#description').val();
-								processPOSTRequest("backendprocess2.php", "createThreat=true&address=" + address + "&lat=" + e.latLng.lat() + "&lng=" + e.latLng.lng() + "&description=" + description);
+								threatObj.description = description;
+								processPOSTRequest("backendprocess2.php", "createThreat=true&threatObj=" + JSON.stringify(threatObj));
 								$('#threatFormDialog').dialog('close');								
 							}
 							setupThreatForm(operation, action_performed);
@@ -137,6 +146,7 @@
 				});
 
 			}
+
 			//addMarker
 			google.maps.event.addListener(map, 'click', function(e) {
 				if (toDelete == false && toDrag == false) {	

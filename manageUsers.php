@@ -3,6 +3,7 @@
 	$user = $session->is_logged_in() ? User::find_by_id($session->user_id) : false;
 	if (!$user) redirect_to('login.php');
 	$user_fields = User::getUserFields();
+	$offices = Office::find_by_sql("SELECT id, name FROM OFFICE_TB");
 ?>
 <!DOCTYPE html>
 <html>
@@ -60,7 +61,11 @@
 				</tr>
 				<tr>
 					<td>Office: </td>
-					<td><select id="office_id" name="office_id"></select></td>
+					<td><select id="office_id" name="office_id">
+						<?php foreach ($offices as $key => $eachOffice): ?>
+							<option value="<?php echo htmlentities($eachOffice->id); ?>"><?php echo htmlentities($eachOffice->name); ?></option>
+						<?php endforeach; ?>
+					</select></td>
 				</tr>
 				<tr>
 					<td>Department: </td>
@@ -114,7 +119,7 @@
 
 			function handleServerResponse() {
 				if (objReq.readyState == 4 && objReq.status == 200) {
-					console.log(objReq.responseText);
+					//console.log(objReq.responseText);
 					var jsonObj = JSON.parse(objReq.responseText);
 
 					if (jsonObj.Offices) {
@@ -149,7 +154,7 @@
 			}
 
 			function handleSuccessResponse(response) {
-				console.log(response);
+				//console.log(response);
 				var jsonObj = JSON.parse(response);
 				if (jsonObj.Users) {
 					setupUserTable(jsonObj.Users);
@@ -175,7 +180,7 @@
 			}
 
 			$(document).on('click', '.optDelete', function() {
-				console.log("id: " + $(this).attr("data-internalId"));
+				//console.log("id: " + $(this).attr("data-internalId"));
 				var user_id = $('#ACCOUNTID').val();
 				var selected_user_id = $(this).attr("data-internalId");
 				var confirm_msg = user_id == selected_user_id ? "WARNING: you can't delete your own account." : "Are you sure you want to delete this account";
@@ -248,7 +253,8 @@
 				var action_performed = function() {
 					getBtnAction("CREATE");
 				}
-				processRequest("backendprocess.php?getOfficeIds=true");
+				//processRequest("backendprocess.php?getOfficeIds=true");
+				$('#office_id').prop('selectedIndex', 0);
 				setupUserForm("CREATE", action_performed);
 				$('#userFormDialog').dialog('open');
 				return false;
@@ -260,7 +266,7 @@
 
 			$('#username').on('blur', function() {
 				var user_id = $('#username').attr('data-internalid');
-				console.log("USER ID: " + user_id);
+				//console.log("USER ID: " + user_id);
 				if (user_id == "")
 					processRequest("backendprocess.php?hasExisting=true&hasUsername=" + $('#username').val());		
 				else 
@@ -352,7 +358,7 @@
 		    		var password = $('#password').val();
 		    		var confPass = $('#confPass').val();
 		    		if (password != confPass) {
-		    			console.log("passwords dont match");
+		    			//console.log("passwords dont match");
 		    			$('#passNotice').text("passwords don't match");
 		    			return false;
 		    		}
@@ -382,7 +388,7 @@
 		    }
 
 		    $('#searchUser').on('input', function() {
-		    	console.log('changes');
+		    	//console.log('changes');
 		    	var searchVal = $('#searchUser').val();
 		    	processRequest("backendprocess.php?getUsers=true&searchValue=" + searchVal + "&getType=" + currentOption);
 		    });

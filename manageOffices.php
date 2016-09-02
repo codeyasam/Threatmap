@@ -77,7 +77,7 @@
 			processRequest("backendprocess3.php?getOffices=true&getType=all");
 
 			var currentOption = "all";
-			var officeObj = {id:"",name:"",contact_person:"",contact_no:"",address:"",municipality:"",lat:"",lng:""};
+			var officeObj = {id:"",name:"",contact_person:"",contact_no:"",address:"",municipality:"", province:"", country:"", lat:"",lng:""};
 
 			function handleServerResponse() {
 				if (objReq.readyState == 4 && objReq.status == 200) {
@@ -112,7 +112,7 @@
 			}
 
 			function setupOfficeTable(jsonOfficesObj) {
-				var tblHeaders = ['ID', 'NAME', 'ADDRESS', 'CONTACT PERSON', 'CONTACT NO', 'LAT', 'LNG'];
+				var tblHeaders = ['ID', 'NAME', 'ADDRESS', 'MUNICIPALITY', 'PROVINCE', 'CONTACT PERSON', 'CONTACT NO', 'LAT', 'LNG'];
 				var tblRows = "<tr>";
 				tblRows += getTableHeader(tblHeaders);
 				tblRows += '<th colspan="2">OPTIONS</th>'
@@ -252,19 +252,22 @@
 				geocoder.geocode({'latLng':latLng}, function(results, status) {
 					if (status !== google.maps.GeocoderStatus.OK) {
 						//alert(status);
-						custom_alert_dialog("Cant plot an office here. Location seems outside of the Philippines.");
+						custom_alert_dialog("Can't plot an office here. Location seems outside of the Philippines.");
 					}
 
 					if (status == google.maps.GeocoderStatus.OK) {
-						console.log(results[0]);
+						//console.log(results[0]);
 						officeObj.address = results[0].formatted_address;
-						if (results[0].address_components[1] == undefined) {
-							custom_alert_dialog("Cant plot an office here. Location doesn't belong to any municipality");
+						officeObj.municipality = "";
+						officeObj.province = "";
+						getLocalityAdmin2(results[0].address_components, officeObj);
+						if (officeObj.municipality == "" && officeObj.province == "") {
+							custom_alert_dialog("Can't plot an office here. Location doesn't belong to any municipality and provinces");
 							return;
 						}
-						officeObj.municipality = results[0].address_components[1].long_name;
 						officeObj.lat = e.latLng.lat();
 						officeObj.lng = e.latLng.lng();
+						//console.log(officeObj);
 						markerOptions.position = new google.maps.LatLng(officeObj.lat, officeObj.lng);
 						$('#address').text(officeObj.address);
 						addMarkerOnce(markerOptions);
