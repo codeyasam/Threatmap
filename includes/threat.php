@@ -4,13 +4,16 @@
 	class Threat extends DatabaseObject {
 
 		protected static $table_name = "THREAT_TB";
-		protected static $db_fields  = array("id", "description", "address", "lat", "lng");
+		protected static $db_fields  = array("id", "description", "address", "municipality", "province", "country", "lat", "lng");
 
 		public $id;
 		public $address;
 		public $lat;
 		public $lng;
 		public $description;
-		
+		public $municipality;
+		public $province;
+		public $country;
+
 	}
 ?>

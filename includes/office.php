@@ -5,23 +5,25 @@
 	class Office extends DatabaseObject {
 
 		protected static $table_name = "OFFICE_TB";
-		protected static $db_fields = array('id', 'name', 'address', 'municipality', 'contact_person', 'contact_no', 'lat', 'lng');
+		protected static $db_fields = array('id', 'name', 'address', 'municipality', 'province', 'country', 'contact_person', 'contact_no', 'lat', 'lng');
 
 		public $id;
 		public $name;
 		public $address;
 		public $municipality;
+		public $province;
+		public $country;
 		public $contact_person;
 		public $contact_no;
 		public $lat;
 		public $lng;
 
 		public static function getOfficeFields() {
-			return array('id'=>'ID', 'name'=>'Name', 'address'=>'Address', 'municipality'=>'Municipality', 'contact_person'=>'Contact Person', 'contact_no'=>'Contact No.');
+			return array('id'=>'ID', 'name'=>'Name', 'address'=>'Address', 'municipality'=>'Municipality', 'province'=>'Province', 'contact_person'=>'Contact Person', 'contact_no'=>'Contact No.');
 		}
 
 		public function getCustomFields() {
-			return array('id', 'name', 'address', 'contact_person', 'contact_no', 'lat', 'lng'); 
+			return array('id', 'name', 'address', 'municipality', 'province', 'contact_person', 'contact_no', 'lat', 'lng'); 
 		}
 
 		public function toJSON($customized=false) {
