@@ -12,7 +12,8 @@
 			$clients = ClientUser::find_all();
 		} else if ($_GET['getType'] == 'full_name') {
 			$searchStr = trim($_GET['searchStr']);
-			$clients = ClientUser::search_by_column_array($searchStr, array('first_name', 'last_name', 'middle_name'));
+			//$clients = ClientUser::search_by_column_array($searchStr, array('first_name', 'last_name', 'middle_name'));
+			$clients = ClientUser::searc_user_by_full_name($searchStr);
 		} else {
 			$searchStr = trim($_GET['searchStr']);
 			$clients = ClientUser::search_by_column_array($searchStr, array(trim($_GET['getType'])));
