@@ -105,3 +105,17 @@ function getTableHeader(headerArray) {
 	}
 	return tblHeaders;
 }
+
+function getLocalityAdmin2(addressComponentsArr, entityObj) {
+	for (var key in addressComponentsArr) {
+		if (addressComponentsArr.hasOwnProperty(key)) {
+			if (addressComponentsArr[key].types[0] == "locality") {
+				entityObj.municipality = addressComponentsArr[key].long_name;
+			} else if (addressComponentsArr[key].types[0] == "administrative_area_level_2") {
+				entityObj.province = addressComponentsArr[key].long_name;
+			} else if (addressComponentsArr[key].types[0] == "country") {
+				entityObj.country = addressComponentsArr[key].long_name;
+			}
+		}
+	}
+}
