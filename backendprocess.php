@@ -17,7 +17,8 @@
 		if ($_GET['getType'] == "all") {
 			$allUsers = User::find_all();	
 		} else if ($_GET['getType'] == "full_name") {
-			$allUsers = User::search_by_column_array(trim($_GET['searchValue']), array('first_name', 'middle_name', 'last_name'));
+			//$allUsers = User::search_by_column_array(trim($_GET['searchValue']), array('first_name', 'middle_name', 'last_name'));
+			$allUsers = User::searc_user_by_full_name(trim($_GET['searchValue']));
 		} else if ($_GET['getType'] == "office_id") {
 			$offices = Office::search_by_column_array($_GET['searchValue'], array('name'));
 			$idsArr = array_map(function($officeObj) { return $officeObj->id; }, $offices);
@@ -69,9 +70,9 @@
 		$output .= createJSONEntity("Users", $allUsers, true);
 	} else if (isset($_GET['selectUser'])) {
 		$selected_user = User::find_by_id($_GET['user_id']);
-		$output .= '"selectedUser" : {' . $selected_user->toJSON() . '},';
-		$allOffices = Office::find_all();
-		$output .= createJSONEntity("Offices", $allOffices);
+		$output .= '"selectedUser" : {' . $selected_user->toJSON() . '}';
+		// $allOffices = Office::find_by_sql("SELECT id, name FROM OFFICE_TB");
+		// $output .= createJSONEntity("Offices", $allOffices);
 	} else if (isset($_POST['editUser'])) {
 		$current_user = User::find_by_id($_POST['user_id']);
 		$current_user->first_name = trim($_POST['first_name']);
