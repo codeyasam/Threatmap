@@ -22,6 +22,8 @@
 		$office->contact_person = $jsonOffice->contact_person;
 		$office->contact_no = $jsonOffice->contact_no;
 		$office->municipality = $jsonOffice->municipality;
+		$office->province = $jsonOffice->province;
+		$office->country = $jsonOffice->country;
 		$office->lat = $jsonOffice->lat;
 		$office->lng = $jsonOffice->lng;
 		$office->create();
@@ -39,6 +41,8 @@
 		$office->contact_person = $jsonOffice->contact_person;
 		$office->contact_no = $jsonOffice->contact_no;
 		$office->municipality = $jsonOffice->municipality;
+		$office->province = $jsonOffice->province;
+		$office->country = $jsonOffice->country;		
 		$office->lat = $jsonOffice->lat;
 		$office->lng = $jsonOffice->lng;
 		$office->update();
