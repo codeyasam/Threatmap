@@ -42,10 +42,11 @@
 
 		public function confirm_query($result) {
 			if (!$result) {
-				$output = "Database query failed: " . mysqli_error($this->connection) .
-				"<br/> <br/>";
-				$output .= "Last SQL Query: " . $this->last_query;
-				die($output);
+				// $output = "Database query failed: " . mysqli_error($this->connection) .
+				// "<br/> <br/>";
+				// $output .= "Last SQL Query: " . $this->last_query;
+				// die($output);
+				return true;
 			}
 		}
 

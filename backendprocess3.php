@@ -11,9 +11,10 @@
 		$offices = getOffices();
 		$output .= createJSONEntity("Offices", $offices, true);
 	} else if (isset($_POST['deleteOffice'])) {
-		Office::delete_by_id(trim($_POST['office_id']));
+		$has_affected_rows = Office::delete_by_id(trim($_POST['office_id']));
 		$offices = getOffices(true);
-		$output .= createJSONEntity("Offices", $offices, true);
+		$output .= $has_affected_rows ? createJSONEntity("Offices", $offices, true) : '"hasDeleteError":"true"';   
+		
 	} else if (isset($_POST['createOffice'])) {
 		$jsonOffice = json_decode($_POST['jsonOffice']);
 		$office = new Office();

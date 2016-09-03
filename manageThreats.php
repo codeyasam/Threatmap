@@ -7,7 +7,7 @@
 <!DOCTYPE html>
 <html>
 	<head>
-		<title></title>
+		<title>ThreatMap | Threats</title>
 		<link rel="stylesheet" type="text/css" href="js/jquery-ui.css">
 		<link rel="stylesheet" type="text/css" href="css/main.css">
 	</head>
@@ -25,7 +25,7 @@
 		</div>
 		
 		<div id="threatFormDialog" style="display:none;" title="NOTICE">
-			<td><input id="description" type="text" placeholder="enter threat description"/>
+			<input id="description" type="text" placeholder="enter threat description"/>
 		</div>
 		<script src="https://maps.googleapis.com/maps/api/js?sensor=false&key=AIzaSyDDpPDWu9z820FMYyOVsAphuy0ryz4kt2o&libraries=places&sensor=false"></script>
 		

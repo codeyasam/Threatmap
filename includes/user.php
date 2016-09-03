@@ -8,7 +8,7 @@
 		protected static $db_fields = array('id', 'display_picture','first_name', 
 											'last_name', 'middle_name', 'address', 
 											'contact_no', 'office_id', 'department', 
-											'rank', 'username', 'password');
+											'rank', 'username', 'password', 'user_type');
 
 		public $id;
 		public $display_picture = "DISPLAY_PICTURES/default_avatar.png";
@@ -22,6 +22,7 @@
 		public $rank;
 		public $username;
 		public $password;
+		public $user_type = "";
 
 		public static function authenticate($username="", $password="") {
 			global $database;
@@ -113,25 +114,27 @@
 			$str = $database->escape_value($str);
 
 			$sql  = "SELECT * FROM " . self::$table_name . " ";
-			$sql .= "WHERE ";
+			$sql .= "WHERE (";
 			$sqlArray = array();
 			foreach ($columnArray as $key => $value) {
 				$sqlArray[] = $value . " LIKE '%" . $str . "%'";
 			}
 			$sql .= join(' OR ', $sqlArray);
+			$sql .= ") AND user_type = '' ";
 			return self::find_by_sql($sql);
 		}
 
-		public static function searc_user_by_full_name($full_name) {
+		public static function search_user_by_full_name($full_name) {
 			global $database;
 			$full_name = $database->escape_value($full_name);
 			$sql = "SELECT * FROM " . self::$table_name . " ";
-			$sql .= "WHERE CONCAT(last_name, ' ', first_name, ' ', middle_name) LIKE ";
+			$sql .= "WHERE (CONCAT(last_name, ' ', first_name, ' ', middle_name) LIKE ";
 			$sql .= "'%" . $full_name . "%' " . "OR ";
 			$sql .= "CONCAT(first_name, ' ', middle_name, ' ', last_name) LIKE ";
 			$sql .= "'%" . $full_name . "%' " . "OR ";
 			$sql .= "CONCAT(first_name, ' ', last_name, ' ', middle_name) LIKE ";
-			$sql .= "'%" . $full_name . "%' ";
+			$sql .= "'%" . $full_name . "%' ) ";
+			$sql .= "AND user_type = '' ";
 			return self::find_by_sql($sql);
 		}
 

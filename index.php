@@ -7,7 +7,7 @@
 <!DOCTYPE html>
 <html>
 	<head>
-		<title></title>
+		<title>ThreatMap | Home</title>
 		<link rel="stylesheet" type="text/css" href="css/main.css">
 	</head>
 	<body>

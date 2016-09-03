@@ -9,7 +9,7 @@
 <!DOCTYPE html>
 <html>
 	<head>
-		<title></title>
+		<title>Threatmap | Offices</title>
 		<link rel="stylesheet" type="text/css" href="js/jquery-ui.css">	
 		<link rel="stylesheet" type="text/css" href="css/main.css"/>	
 	</head>
@@ -107,6 +107,8 @@
 						custom_alert_dialog("Successfully updated an office.");
 						officeObj = {id:"",name:"",contact_person:"",contact_no:"",address:"",municipality:"",lat:"",lng:""};
 						setOfficeDetails(officeObj);
+					} else if (jsonObj.hasDeleteError) {
+						custom_alert_dialog("Cant delete this office. A user is currently assigned to this office.");
 					}
 				}
 			}

@@ -8,11 +8,15 @@
 <!DOCTYPE html>
 <html>
 	<head>
-		<title></title>
+		<title>ThreatMap | Users</title>
 		<link rel="stylesheet" type="text/css" href="js/jquery-ui.css">		
 		<link rel="stylesheet" type="text/css" href="css/main.css"/>
 	</head>
 	<body>
+		<div id="userModal" style="display:none;" title="Confirmation Required">
+			<p></p>
+			<input id="modalPassword" type="password" placeholder="Enter password of selected account."/>
+		</div>
 		<div id="userWrapper" class="page-wrapper">
 		<?php getNavigation($user); ?>
 			<div style="padding: 20px;">
@@ -82,6 +86,10 @@
 				<tr>
 					<td></td>
 					<td id="usernameNotice"></td>
+				</tr>
+				<tr id="oldpassContainer" style="display:none;">
+					<td>Old Password: </td>
+					<td><input id="old_password" type="password" name=""></td>
 				</tr>			
 				<tr>
 					<td>Password: </td>
@@ -119,7 +127,8 @@
 
 			function handleServerResponse() {
 				if (objReq.readyState == 4 && objReq.status == 200) {
-					//console.log(objReq.responseText);
+					console.log(objReq.responseText);
+
 					var jsonObj = JSON.parse(objReq.responseText);
 
 					if (jsonObj.Offices) {
@@ -141,14 +150,39 @@
 							getBtnAction("EDIT", jsonObj.selectedUser.id);	
 						}
 						setupUserForm("EDIT", action_performed, jsonObj.selectedUser);
+						$('#btnCreate').hide();
 						$('#password').val('');
 						$('#confPass').val('');
+						$('#old_password').val('');
 						$('#userFormDialog').dialog('open');
+					} else if (jsonObj.toBeDeleted) {
+						$('#modalPassword').val('');
+						console.log("here at toBeDeleted");
+						var user_id = jsonObj.user_id;
+						var msg = "Are you sure you want to delete this account?";
+						var is_super_admin = "false";
+						$('#modalPassword').show();
+						if (jsonObj.SUPERADMIN) {	
+							is_super_admin = "true";
+							$('#modalPassword').hide();
+						} else if (jsonObj.yourAccount) {
+							msg = "WARNING: you're about to delete your own account, are you sure? (Due to deletion of your account, you'll be logged out immediately and won't be able to log in again)";
+						}
+
+						var action_performed = function() {
+							$('#userModal').dialog('close');
+							var password = $('#modalPassword').val();
+				 			processPOSTRequest("backendprocess.php", "deleteAccount=true&user_id=" + user_id + "&password=" + password + "&super_admin=" + is_super_admin);					
+						}
+
+						setupUserModal(msg, action_performed);
+					} else if (jsonObj.wrongPass) {
+						custom_alert_dialog("Failed to delete user. Wrong old password.");
 					}
 
 					if (jsonObj.forcedLogout) {
-						custom_alert_dialog("WARNING: You can't delete your own account.");
-						//window.location = "logout.php";
+						//custom_alert_dialog("WARNING: You can't delete your own account.");
+						window.location = "logout.php";
 					}
 				}
 			}
@@ -158,6 +192,8 @@
 				var jsonObj = JSON.parse(response);
 				if (jsonObj.Users) {
 					setupUserTable(jsonObj.Users);
+				} else 	if (jsonObj.wrongPass) {
+					custom_alert_dialog("Failed to edit user details. Wrong old password.");
 				}
 			}
 
@@ -181,27 +217,32 @@
 
 			$(document).on('click', '.optDelete', function() {
 				//console.log("id: " + $(this).attr("data-internalId"));
-				var user_id = $('#ACCOUNTID').val();
-				var selected_user_id = $(this).attr("data-internalId");
-				var confirm_msg = user_id == selected_user_id ? "WARNING: you can't delete your own account." : "Are you sure you want to delete this account";
-				//"WARNING: you're about to delete your own account, are you sure? (Due to deletion of your account, you'll be logged out immediately and won't be able to log in again)" : "Are you sure you want to delete this account?";
-				var redirect_to_logout = user_id == selected_user_id ? true : false;
-				if (redirect_to_logout) { 
-					custom_alert_dialog("WARNING: You can't delete your own account.");
-					return false;
-				}
+				//var user_id = $('#ACCOUNTID').val();
+				//var selected_user_id = $(this).attr("data-internalId");
+				//var confirm_msg = user_id == selected_user_id ? "WARNING: you can't delete your own account." : "Are you sure you want to delete this account";
+				// "WARNING: you're about to delete your own account, are you sure? (Due to deletion of your account, you'll be logged out immediately and won't be able to log in again)" : "Are you sure you want to delete this account?";
+				// var redirect_to_logout = user_id == selected_user_id ? true : false;
+				// if (redirect_to_logout) { 
+				// 	custom_alert_dialog("WARNING: You can't delete your own account.");
+				// 	return false;
+				// }
 				
-				var action_performed = function() {
-					$('#dialog').dialog('close');
-					processPOSTRequest("backendprocess.php", "deleteAccount=true&user_id=" + selected_user_id + "&logout=" + redirect_to_logout);
-				}
+				// var action_performed = function() {
+				// 	$('#dialog').dialog('close');
+				// 	processPOSTRequest("backendprocess.php", "deleteAccount=true&user_id=" + selected_user_id + "&logout=" + redirect_to_logout);
+				// }
 
-				confirm_action(confirm_msg, action_performed);
+				// confirm_action(confirm_msg, action_performed);
+				var selected_user_id = $(this).attr("data-internalId");
+				processRequest("backendprocess.php?toBeDeleted=true&user_id=" + selected_user_id);
 				return false;
 			});
 
 			$(document).on('click', '.optEdit', function() {
 				var user_id = $(this).attr("data-internalid");
+				$('#oldpassContainer').show();
+				$('#btnCreate').hide();
+				$('#btnSave').show();
 				$('#btnSave').attr('data-internalId', user_id);
 				processRequest("backendprocess.php?selectUser=true&user_id=" +user_id);
 				return false;
@@ -244,6 +285,7 @@
 					$('#username').attr('data-internalid', "");
 					$('#password').val('');
 					$('#confPass').val('');
+					$('#old_password').val('');
 				}
 				$('#picInputContainer').html('<input id="pic" type="file" name="img_upload" accept="image/*" onchange="loadFile(event)" />');				
 			}
@@ -255,6 +297,9 @@
 				}
 				//processRequest("backendprocess.php?getOfficeIds=true");
 				$('#office_id').prop('selectedIndex', 0);
+				$('#oldpassContainer').hide();
+				$('#btnSave').hide();
+				$('#btnCreate').show();
 				setupUserForm("CREATE", action_performed);
 				$('#userFormDialog').dialog('open');
 				return false;
@@ -301,13 +346,20 @@
 					return false;
 				}	
 
+
 				var display_picture = document.getElementById('pic').files[0];
 				var formData = new FormData();
 				if (opt_type == "CREATE") {
 					formData.append('createUser', 'true');	
 				} else {
+					var oldPassword = $('#old_password').val();
+					if (oldPassword == "") {
+						custom_alert_dialog("Fill all required fields");
+						return false;
+					}
 					formData.append('editUser', 'true');
-					formData.append('user_id', user_id)
+					formData.append('user_id', user_id);
+					formData.append('oldPass', oldPassword);
 				}
 				
 				formData.append('display_picture', display_picture);
@@ -404,6 +456,27 @@
 		    	}
 		    	processRequest('backendprocess.php?getUsers=true&searchValue=' + searchVal + "&getType=" + currentOption);
 		    });
+
+		    function setupUserModal(msg, action_performed) {
+				$('#userModal').dialog({
+					autoOpen: false,
+					modal: true,
+					buttons : [{
+						text: "Cancel",
+					    click : function() {
+					    	$(this).dialog("close");
+					    },  
+					  }, {
+					  	text: "OK",
+					  	"id": "btnCreate",
+					  	click: action_performed,
+					  }],
+					close: function() {
+					}					
+				});
+				$('#userModal p').text(msg);
+				$('#userModal').dialog('open');		    	
+		    }
 
 		</script>
 	</body>
