@@ -4,7 +4,7 @@
 <?php  
 	class ClientUser extends DatabaseObject {
 		protected static $table_name = "CLIENT_TB";
-		protected static $db_fields = array('id', 'display_picture', 'first_name', 'last_name', 'middle_name', 'address', 'lat', 'lng', 'contact_no', 'office_id', 'department', 'rank', 'username', 'password', 'person_to_notify', 'relationship', 'identification_number');
+		protected static $db_fields = array('id', 'display_picture', 'first_name', 'last_name', 'middle_name', 'address', 'lat', 'lng', 'contact_no', 'username', 'password', 'person_to_notify', 'relationship', 'identification_number');
 
 		public $id;
 		public $display_picture;
@@ -15,9 +15,6 @@
 		public $lat;
 		public $lng;
 		public $contact_no;
-		public $office_id;
-		public $department;
-		public $rank;
 		public $username;
 		public $password;
 		public $person_to_notify;
